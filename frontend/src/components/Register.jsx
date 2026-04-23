@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { X, Mail, Lock, User, Phone } from 'lucide-react';
-import './Login.css'; // Reusing modal layout styles
+import './Login.css'; 
 
 const Register = ({ isOpen, onClose }) => {
   const [formData, setFormData] = useState({

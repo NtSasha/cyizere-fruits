@@ -18,7 +18,7 @@ const Navbar = ({ onLoginClick, onRegisterClick }) => {
 
   const navLinks = [
     { name: 'Home', path: '/' },
-    { name: 'Categories', path: '#categories' },
+    { name: 'Categories', path: '/categories' },
     { name: 'Shop', path: '/shop' },
     { name: 'Juice Bar', path: '/juice-bar' },
     { name: 'Coffee', path: '/coffee' }

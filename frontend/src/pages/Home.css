@@ -138,7 +138,7 @@ section {
   gap: 8rem;
   padding: 1rem 5vw;
   width: max-content;
-  animation: categoriesScroll 7s linear infinite alternate;
+  animation: categoriesScroll 15s linear infinite alternate;
   will-change: transform;
 }
 

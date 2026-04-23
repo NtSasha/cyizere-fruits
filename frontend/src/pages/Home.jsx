@@ -44,8 +44,12 @@ const Home = () => {
               { name: 'Fruits', image: '/fruits.png' },
               { name: 'Vegetables', image: '/vegetables.png' },
               { name: 'Juices', image: '/juices.png', scale: '0.85' },
-              { name: 'Coffee', image: '/coffee.png', scale: '1' },
+              { name: 'Fruit Packs', image: '/fruit-packs.png', scale: '1.2' },
               { name: 'Organic Products', image: '/organic-new.png', scale: '1.3', objectPosition: 'center 40%' },
+              { name: 'Seasonal fruits and vegetables', image: '/seasonal-full-mix.png', scale: '1.2' },
+              { name: 'Coffee', image: '/coffee.png', scale: '1' },
+              { name: 'Juice Bar', image: '/juices.png', scale: '0.85' },
+              { name: 'Fruit Baskets', image: '/fruit-basket.png', scale: '1.1' },
             ].map((cat, index) => (
               <div className="circular-cat-card" key={index}>
                 <div className="circular-cat-img">

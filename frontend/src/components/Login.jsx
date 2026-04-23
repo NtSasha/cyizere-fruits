@@ -27,7 +27,7 @@ const Login = ({ isOpen, onClose }) => {
         <div className="auth-modal-body">
           <div className="auth-modal-header">
             <h2>Welcome Back!</h2>
-            <p>Enter your details to continue.</p>
+            <p>Enter your credentials to continue.</p>
           </div>
 
           <form className="auth-modal-form" onSubmit={handleSubmit}>
