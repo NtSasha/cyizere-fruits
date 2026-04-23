@@ -733,6 +733,47 @@ section {
   transform: scale(1.15) rotate(2deg);
 }
 
+.tp-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 5px 14px;
+  border-radius: 50px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  z-index: 2;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  background: white;
+  color: #334155;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.tp-badge.badge-new {
+  background: #eff6ff;
+  color: #2563eb;
+  border-color: #dbeafe;
+}
+
+.tp-badge.badge-organic {
+  background: #f0fdf4;
+  color: #16a34a;
+  border-color: #dcfce7;
+}
+
+.tp-badge.badge-bestseller {
+  background: #fffbeb;
+  color: #d97706;
+  border-color: #fef3c7;
+}
+
+.tp-badge.badge-deal {
+  background: #fef2f2;
+  color: #dc2626;
+  border-color: #fee2e2;
+}
+
 .tp-info {
   display: flex;
   flex-direction: column;

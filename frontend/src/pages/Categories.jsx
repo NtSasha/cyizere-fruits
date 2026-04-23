@@ -92,20 +92,11 @@ const Categories = () => {
 
   return (
     <div className="categories-page">
-      <div className="categories-hero">
-        <div className="hero-blur-1"></div>
-        <div className="hero-blur-2"></div>
-        <div className="categories-container">
-          <header className="categories-header animate-up">
-            <h1>Shop by Categories</h1>
-            <p>Explore our curated selection of fresh and healthy options.</p>
-          </header>
-
-          <div className="categories-grid">
-            {categories.map((cat, index) => (
-              <CategoryCard key={cat.id} {...cat} />
-            ))}
-          </div>
+      <div className="categories-container">
+        <div className="categories-grid animate-up">
+          {categories.map((cat, index) => (
+            <CategoryCard key={cat.id} {...cat} />
+          ))}
         </div>
       </div>
     </div>

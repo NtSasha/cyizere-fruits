@@ -4,7 +4,7 @@ import './Footer.css';
 
 const Footer = () => {
   return (
-    <footer className="footer" style={{ backgroundImage: "url('/footer-bg.png')" }}>
+    <footer className="footer" style={{ backgroundImage: "url('/footer-bg-fruits.png')" }}>
       <div className="footer-overlay"></div>
       <div className="footer-grid-v2">
         {/* Column 1: Brand & Social */}

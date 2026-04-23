@@ -77,38 +77,6 @@ const Home = () => {
           <h2 className="featured-title">Featured products</h2>
         </div>
 
-        <div className="featured-search-container">
-          <div className="search-box">
-            <Search size={20} className="search-icon" />
-            <input type="text" placeholder="Search for products..." />
-          </div>
-          <div className="controls-right">
-            <div className="sort-dropdown-container">
-              <select className="sort-dropdown">
-                <option value="popular">Popular</option>
-                <option value="newest">Newest</option>
-                <option value="low-to-high">Price Low to High</option>
-                <option value="high-to-low">Price High to Low</option>
-              </select>
-              <ChevronDown size={14} className="sort-icon" />
-            </div>
-
-            <div className="quick-filters">
-              <span className="quick-chip">Organic</span>
-              <span className="quick-chip">On Sale</span>
-              <span className="quick-chip">Fresh Today</span>
-            </div>
-
-            <div className="view-toggle">
-              <button className="view-btn active" title="Grid View">
-                <LayoutGrid size={18} />
-              </button>
-              <button className="view-btn" title="List View">
-                <List size={18} />
-              </button>
-            </div>
-          </div>
-        </div>
 
         <div className="product-carousel-container">
           <div className="product-carousel">
