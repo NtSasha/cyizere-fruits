@@ -2,7 +2,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Search, ShoppingCart, Leaf } from 'lucide-react';
 import './Navbar.css';
 
-const Navbar = () => {
+const Navbar = ({ onLoginClick, onRegisterClick }) => {
   const location = useLocation();
   const currentPath = location.pathname;
 
@@ -48,12 +48,12 @@ const Navbar = () => {
           </Link>
           
           <div className="auth-buttons">
-            <Link to="/login" className="auth-btn">
+            <button onClick={onLoginClick} className="auth-btn">
               Login
-            </Link>
-            <Link to="/register" className="auth-btn">
+            </button>
+            <button onClick={onRegisterClick} className="auth-btn">
               Register
-            </Link>
+            </button>
           </div>
         </div>
       </div>

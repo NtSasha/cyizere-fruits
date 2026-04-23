@@ -1,4 +1,5 @@
-import { Leaf, Mail, Phone, MapPin, MessageCircle, Send, Camera } from 'lucide-react';
+import { Leaf, Mail, Phone, MapPin, Send } from 'lucide-react';
+import { FaInstagram, FaTiktok, FaFacebookF } from 'react-icons/fa';
 import './Footer.css';
 
 const Footer = () => {
@@ -14,9 +15,9 @@ const Footer = () => {
             Healthy living made simple and affordable with locally sourced produce.
           </p>
           <div className="footer-social-icons-v2">
-            <a href="#" className="social-icon-circle"><Camera size={18} /></a>
-            <a href="#" className="social-icon-circle"><Send size={18} /></a>
-            <a href="#" className="social-icon-circle"><MessageCircle size={18} /></a>
+            <a href="#" className="social-icon-circle" aria-label="Instagram"><FaInstagram size={20} /></a>
+            <a href="#" className="social-icon-circle" aria-label="TikTok"><FaTiktok size={18} /></a>
+            <a href="#" className="social-icon-circle" aria-label="Facebook"><FaFacebookF size={18} /></a>
           </div>
         </div>
 

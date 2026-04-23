@@ -157,12 +157,14 @@
   background: rgba(55, 83, 64, 0.1);
   color: #375340;
   border: none;
-  padding: 0.3rem 1rem;
+  padding: 0.5rem 1.2rem;
   border-radius: 50px;
   font-weight: 700;
+  font-size: 0.95rem;
   cursor: pointer;
   text-decoration: none;
   transition: var(--transition);
+  font-family: inherit;
 }
 
 .auth-btn:hover {
