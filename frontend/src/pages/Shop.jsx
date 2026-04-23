@@ -334,4 +334,7 @@ const Shop = () => {
   );
 };
 
+
+// End of Shop Page component
 export default Shop;
+
