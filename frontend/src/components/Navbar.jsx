@@ -1,24 +1,49 @@
-import { Link, useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Search, ShoppingCart, Leaf } from 'lucide-react';
 import './Navbar.css';
 
 const Navbar = ({ onLoginClick, onRegisterClick }) => {
   const location = useLocation();
+  const navigate = useNavigate();
   const currentPath = location.pathname;
+  const [activeAnchor, setActiveAnchor] = useState('');
+
+  // Clear active anchor if user navigates away from home
+  useEffect(() => {
+    if (currentPath !== '/') {
+      setActiveAnchor('');
+    }
+  }, [currentPath]);
 
   const navLinks = [
     { name: 'Home', path: '/' },
-    { name: 'Categories', path: '/categories' },
-    { name: 'Products', path: '/products' },
+    { name: 'Categories', path: '#categories' },
     { name: 'Shop', path: '/shop' },
-    { name: 'Orders', path: '/orders' }
+    { name: 'Juice Bar', path: '/juice-bar' },
+    { name: 'Coffee', path: '/coffee' }
   ];
+
+  const handleNavClick = (e, path) => {
+    if (path.startsWith('#')) {
+      e.preventDefault();
+      setActiveAnchor(path);
+      const element = document.querySelector(path);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        navigate('/' + path);
+      }
+    } else {
+      setActiveAnchor('');
+    }
+  };
 
   return (
     <nav className="pill-navbar-wrapper">
       <div className="pill-navbar">
         {/* Left Side: Aesthetic Logo */}
-        <Link to="/" className="nav-brand fancy-logo">
+        <Link to="/" className="nav-brand fancy-logo" onClick={() => setActiveAnchor('')}>
           <img src="/logo.png" alt="Cyizere Logo" style={{height: '40px'}} />
           Cyizere Fruits
         </Link>
@@ -26,11 +51,16 @@ const Navbar = ({ onLoginClick, onRegisterClick }) => {
         {/* Middle: Links */}
         <div className="nav-links-pill">
           {navLinks.map((link) => {
-            const isActive = currentPath === link.path;
+            const isAnchor = link.path.startsWith('#');
+            const isActive = isAnchor 
+              ? activeAnchor === link.path 
+              : currentPath === link.path && activeAnchor === '';
+
             return (
               <Link
                 key={link.name}
                 to={link.path}
+                onClick={(e) => handleNavClick(e, link.path)}
                 className={`nav-link-item ${isActive ? 'active' : ''}`}
               >
                 {link.name}

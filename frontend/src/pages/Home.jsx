@@ -1,8 +1,22 @@
+import React, { useEffect } from 'react';
 import { ArrowRight, ShoppingCart, Apple, Grape, Carrot, ShieldCheck, Truck, Clock, Droplet, Package, Leaf, Search, ChevronDown, LayoutGrid, List, GlassWater, Tag } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import './Home.css';
 
 const Home = () => {
+  const { hash } = useLocation();
+
+  useEffect(() => {
+    if (hash) {
+      const element = document.querySelector(hash);
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      }
+    }
+  }, [hash]);
+
   return (
     <div className="home-page">
       {/* 1. Hero Section */}
@@ -19,7 +33,7 @@ const Home = () => {
       </section>
 
       {/* 2. Category Section */}
-      <section className="categories">
+      <section className="categories" id="categories">
         <div className="categories-header">
           <h2>Shop by categories</h2>
           <p>Freshly sourced organic produce curated just for your daily needs.</p>
@@ -54,7 +68,7 @@ const Home = () => {
       </section>
 
       {/* 3. Featured Produce with Carousel */}
-      <section className="featured-produce-section">
+      <section className="featured-produce-section" id="products">
         <div className="featured-header">
           <h2 className="featured-title">Featured products</h2>
         </div>

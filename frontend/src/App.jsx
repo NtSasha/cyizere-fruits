@@ -20,7 +20,8 @@ function App() {
         <Route path="/register" element={<div style={{minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center'}}><h2>Register coming soon</h2></div>} />
         <Route path="/shop" element={<div style={{padding: '10rem 5%', textAlign: 'center'}}><h2>Shop coming soon</h2></div>} />
         <Route path="/cart" element={<div style={{padding: '10rem 5%', textAlign: 'center'}}><h2>Cart coming soon</h2></div>} />
-        <Route path="/orders" element={<div style={{padding: '10rem 5%', textAlign: 'center'}}><h2>Orders coming soon</h2></div>} />
+        <Route path="/juice-bar" element={<div style={{padding: '10rem 5%', textAlign: 'center'}}><h2>Juice Bar coming soon</h2></div>} />
+        <Route path="/coffee" element={<div style={{padding: '10rem 5%', textAlign: 'center'}}><h2>Coffee coming soon</h2></div>} />
       </Routes>
       <Footer />
 
