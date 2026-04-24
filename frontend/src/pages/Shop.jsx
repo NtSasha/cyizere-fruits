@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Search, ShoppingCart, Filter, X, ChevronDown, LayoutGrid, List } from 'lucide-react';
+import { useCart } from '../context/CartContext';
 import './Shop.css';
 
 const ProductCard = ({ product, onAddToCart }) => {
@@ -58,6 +59,7 @@ const Shop = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [viewMode, setViewMode] = useState('grid');
+  const { addToCart } = useCart();
 
   // Sync category from URL if present
   useEffect(() => {
@@ -245,7 +247,7 @@ const Shop = () => {
   });
 
   const handleAddToCart = (product) => {
-    console.log(`Added to cart: ${product.name}`);
+    addToCart(product);
   };
 
   return (

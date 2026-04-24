@@ -134,15 +134,21 @@
   transform: translateY(-2px);
 }
 
-.cart-dot {
+.cart-count-badge {
   position: absolute;
-  top: -2px;
-  right: -2px;
-  width: 8px;
-  height: 8px;
-  background-color: var(--secondary);
+  top: -8px;
+  right: -8px;
+  background: #2e7d32;
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 800;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 50%;
-  border: 1.5px solid white;
+  border: 2px solid white;
 }
 
 .auth-buttons {

@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Search, ShoppingCart, Leaf } from 'lucide-react';
+import { useCart } from '../context/CartContext';
 import './Navbar.css';
 
 const Navbar = ({ onLoginClick, onRegisterClick }) => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { cartCount } = useCart();
   const currentPath = location.pathname;
   const [activeAnchor, setActiveAnchor] = useState('');
 
@@ -21,7 +23,7 @@ const Navbar = ({ onLoginClick, onRegisterClick }) => {
     { name: 'Categories', path: '/categories' },
     { name: 'Shop', path: '/shop' },
     { name: 'Juice Bar', path: '/juice-bar' },
-    { name: 'Coffee', path: '/coffee' }
+    { name: 'Coffee', path: '/coffee-bar' }
   ];
 
   const handleNavClick = (e, path) => {
@@ -74,7 +76,7 @@ const Navbar = ({ onLoginClick, onRegisterClick }) => {
           
           <Link to="/cart" className="action-icon">
             <ShoppingCart size={20} />
-            <span className="cart-dot"></span>
+            {cartCount > 0 && <span className="cart-count-badge">{cartCount}</span>}
           </Link>
           
           <div className="auth-buttons">
