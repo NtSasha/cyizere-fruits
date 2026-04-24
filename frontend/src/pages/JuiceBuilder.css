@@ -1,4 +1,4 @@
-.builder-main-title {
+.juice-builder-page .builder-main-title {
   text-align: center;
   color: #375340;
   font-family: 'Outfit', sans-serif;
@@ -13,13 +13,13 @@
   min-height: 100vh;
 }
 
-.builder-header {
+.juice-builder-page .builder-header {
   max-width: 1400px;
   margin: 0 auto 4rem;
   text-align: center;
 }
 
-.builder-tag {
+.juice-builder-page .builder-tag {
   color: #375340;
   text-transform: uppercase;
   font-weight: 800;
@@ -29,22 +29,7 @@
   margin-bottom: 1rem;
 }
 
-.builder-header h1 {
-  font-family: 'Outfit', sans-serif;
-  font-size: 3.5rem;
-  font-weight: 800;
-  color: #1a1a1a;
-  margin-bottom: 1rem;
-}
-
-.builder-header p {
-  color: #64748b;
-  font-size: 1.2rem;
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.builder-container {
+.juice-builder-page .builder-container {
   max-width: 1400px;
   margin: 0 auto;
   display: grid;
@@ -53,7 +38,7 @@
   align-items: start;
 }
 
-.builder-section {
+.juice-builder-page .builder-section {
   background: white;
   padding: 2.5rem;
   border-radius: 30px;
@@ -61,14 +46,14 @@
   margin-bottom: 2.5rem;
 }
 
-.section-header {
+.juice-builder-page .section-header {
   display: flex;
   align-items: center;
   gap: 1.5rem;
   margin-bottom: 2.5rem;
 }
 
-.section-num {
+.juice-builder-page .section-num {
   width: 40px;
   height: 40px;
   background: #375340;
@@ -81,44 +66,42 @@
   font-size: 1.1rem;
 }
 
-.section-header h3 {
+.juice-builder-page .section-header h3 {
   font-size: 1.2rem;
   font-weight: 600;
   color: #1e293b;
 }
 
 /* Fruit Grid */
-.fruit-grid {
+.juice-builder-page .fruit-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 1.5rem;
 }
 
-.fruit-card {
+.juice-builder-page .fruit-card {
   position: relative;
   background: transparent;
-  /* Removed background */
   padding: 1rem;
   border-radius: 24px;
   text-align: center;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   border: 1px solid #f1f5f9;
-  /* Subtle border instead */
 }
 
-.fruit-card:hover {
+.juice-builder-page .fruit-card:hover {
   background: white;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.03);
   border-color: #ecfdf5;
 }
 
-.fruit-card.selected {
+.juice-builder-page .fruit-card.selected {
   background: white;
   border-color: #375340;
 }
 
-.fruit-check {
+.juice-builder-page .fruit-check {
   position: absolute;
   top: 12px;
   right: 12px;
@@ -133,11 +116,11 @@
   transition: all 0.3s;
 }
 
-.fruit-card.selected .fruit-check {
+.juice-builder-page .fruit-card.selected .fruit-check {
   background: #375340;
 }
 
-.fruit-img-wrap {
+.juice-builder-page .fruit-img-wrap {
   width: 100px;
   height: 100px;
   margin: 0 auto 1.5rem;
@@ -146,39 +129,39 @@
   justify-content: center;
 }
 
-.fruit-img-wrap img {
+.juice-builder-page .fruit-img-wrap img {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
 }
 
-.fruit-name {
+.juice-builder-page .fruit-name {
   display: block;
   font-weight: 700;
   color: #1e293b;
   margin-bottom: 0.5rem;
 }
 
-.fruit-price {
+.juice-builder-page .fruit-price {
   font-size: 0.85rem;
   color: #375340;
   font-weight: 600;
 }
 
 /* Options Row */
-.options-row {
+.juice-builder-page .options-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 2.5rem;
 }
 
-.size-grid {
+.juice-builder-page .size-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.75rem;
 }
 
-.size-btn-v2 {
+.juice-builder-page .size-btn-v2 {
   background: #f8fafc;
   border: 2px solid transparent;
   padding: 0.8rem;
@@ -189,34 +172,24 @@
   transition: all 0.3s;
 }
 
-.size-btn-v2:hover {
+.juice-builder-page .size-btn-v2:hover {
   background: #ecfdf5;
   color: #375340;
 }
 
-.size-btn-v2.active {
+.juice-builder-page .size-btn-v2.active {
   background: #375340;
   color: white;
   border-color: #375340;
 }
 
-.size-name {
-  font-weight: 700;
-  font-size: 1.1rem;
-}
-
-.size-extra {
-  font-size: 0.75rem;
-  font-weight: 600;
-}
-
-.sweet-selector {
+.juice-builder-page .sweet-selector {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.75rem;
 }
 
-.sweet-btn {
+.juice-builder-page .sweet-btn {
   background: #f8fafc;
   border: 2px solid transparent;
   padding: 0.8rem;
@@ -227,25 +200,25 @@
   transition: all 0.3s;
 }
 
-.sweet-btn:hover {
+.juice-builder-page .sweet-btn:hover {
   background: #ecfdf5;
   color: #375340;
 }
 
-.sweet-btn.active {
+.juice-builder-page .sweet-btn.active {
   background: #375340;
   color: white;
   border-color: #375340;
 }
 
 /* Extras */
-.extras-grid {
+.juice-builder-page .extras-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 1rem;
 }
 
-.extra-item {
+.juice-builder-page .extra-item {
   display: flex;
   align-items: center;
   gap: 1.25rem;
@@ -257,17 +230,17 @@
   border: 2px solid transparent;
 }
 
-.extra-item:hover {
+.juice-builder-page .extra-item:hover {
   background: white;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.02);
 }
 
-.extra-item.selected {
+.juice-builder-page .extra-item.selected {
   background: white;
   border-color: #375340;
 }
 
-.extra-check {
+.juice-builder-page .extra-check {
   width: 22px;
   height: 22px;
   border: 2px solid #e2e8f0;
@@ -276,12 +249,12 @@
   transition: all 0.3s;
 }
 
-.extra-item.selected .extra-check {
+.juice-builder-page .extra-item.selected .extra-check {
   background: #375340;
   border-color: #375340;
 }
 
-.check-inner {
+.juice-builder-page .check-inner {
   width: 100%;
   height: 100%;
   background: white;
@@ -290,29 +263,64 @@
   transition: all 0.2s;
 }
 
-.extra-item.selected .check-inner {
+.juice-builder-page .extra-item.selected .check-inner {
   transform: scale(1);
 }
 
-.extra-name {
+.juice-builder-page .extra-name {
   font-weight: 600;
   color: #1e293b;
   flex: 1;
 }
 
-.extra-price {
+.juice-builder-page .extra-price {
   font-size: 0.85rem;
   color: #375340;
   font-weight: 700;
 }
 
 /* Sidebar */
-.builder-sidebar {
+.juice-builder-page .builder-sidebar {
   position: sticky;
   top: 8rem;
 }
 
-.summary-card {
+.juice-builder-page .promo-card {
+  background: #f0fdf4; /* Soft light green */
+  padding: 1.5rem;
+  border-radius: 20px;
+  border: 1px solid #bbf7d0; /* Solid green border */
+  display: flex;
+  gap: 1.25rem;
+  align-items: center;
+}
+
+.juice-builder-page .promo-icon-wrap {
+  width: 44px;
+  height: 44px;
+  background: white;
+  border: 1px solid #bbf7d0;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.juice-builder-page .promo-text h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #375340;
+  margin-bottom: 0.25rem;
+}
+
+.juice-builder-page .promo-text p {
+  font-size: 0.8rem;
+  color: #64748b;
+  line-height: 1.4;
+}
+
+.juice-builder-page .summary-card {
   background: white;
   padding: 2.5rem;
   border-radius: 30px;
@@ -320,7 +328,7 @@
   margin-bottom: 2rem;
 }
 
-.summary-card h3 {
+.juice-builder-page .summary-card h3 {
   font-size: 1.1rem;
   font-weight: 700;
   margin-bottom: 1.25rem;
@@ -328,35 +336,35 @@
   border-bottom: 1px solid #f1f5f9;
 }
 
-.summary-scroll {
+.juice-builder-page .summary-scroll {
   max-height: 400px;
   overflow-y: auto;
   margin-bottom: 1.5rem;
   padding-right: 0.5rem;
 }
 
-.summary-item {
+.juice-builder-page .summary-item {
   display: flex;
   justify-content: space-between;
   margin-bottom: 1rem;
   font-size: 0.85rem;
 }
 
-.summary-item .label {
+.juice-builder-page .summary-item .label {
   color: #64748b;
   font-weight: 500;
 }
 
-.summary-item .value {
+.juice-builder-page .summary-item .value {
   color: #1e293b;
   font-weight: 700;
 }
 
-.summary-group {
+.juice-builder-page .summary-group {
   margin-bottom: 1.25rem;
 }
 
-.group-label {
+.juice-builder-page .group-label {
   display: block;
   font-size: 0.75rem;
   font-weight: 700;
@@ -366,14 +374,14 @@
   margin-bottom: 0.75rem;
 }
 
-.selected-list {
+.juice-builder-page .selected-list {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
   padding-left: 0.5rem;
 }
 
-.list-item {
+.juice-builder-page .list-item {
   display: flex;
   justify-content: space-between;
   font-size: 0.8rem;
@@ -381,33 +389,33 @@
   font-weight: 600;
 }
 
-.no-selection {
+.juice-builder-page .no-selection {
   font-size: 0.8rem;
   color: #94a3b8;
   font-style: italic;
 }
 
-.summary-total {
+.juice-builder-page .summary-total {
   background: #f8fafc;
   padding: 1rem;
   border-radius: 15px;
   margin-bottom: 1.5rem;
 }
 
-.total-label {
+.juice-builder-page .total-label {
   font-size: 0.75rem;
   color: #64748b;
   font-weight: 600;
   margin-bottom: 0.25rem;
 }
 
-.total-amount {
+.juice-builder-page .total-amount {
   font-size: 1.4rem;
   font-weight: 800;
   color: #375340;
 }
 
-.order-btn {
+.juice-builder-page .order-btn {
   width: 100%;
   background: #375340;
   color: white;
@@ -425,20 +433,20 @@
   box-shadow: 0 8px 20px rgba(55, 83, 64, 0.15);
 }
 
-.order-btn:hover:not(.disabled) {
+.juice-builder-page .order-btn:hover:not(.disabled) {
   background: #2d4434;
   transform: translateY(-3px);
   box-shadow: 0 15px 30px rgba(55, 83, 64, 0.3);
 }
 
-.order-btn.disabled {
+.juice-builder-page .order-btn.disabled {
   background: #e2e8f0;
   color: #94a3b8;
   box-shadow: none;
   cursor: not-allowed;
 }
 
-.delivery-info {
+.juice-builder-page .delivery-info {
   margin-top: 1.5rem;
   display: flex;
   gap: 0.75rem;
@@ -446,54 +454,33 @@
   color: #64748b;
 }
 
-.delivery-info p {
+.juice-builder-page .delivery-info p {
   font-size: 0.8rem;
   line-height: 1.5;
 }
 
-.promo-card {
-  background: linear-gradient(135deg, #ecfdf5 0%, #ffffff 100%);
-  padding: 2rem;
-  border-radius: 24px;
-  border: 1px solid #d1fae5;
-  display: flex;
-  gap: 1.5rem;
-  align-items: center;
-}
-
-.promo-card h4 {
-  font-weight: 800;
-  color: #065f46;
-  margin-bottom: 0.25rem;
-}
-
-.promo-card p {
-  font-size: 0.85rem;
-  color: #047857;
-}
-
 /* Responsive */
 @media (max-width: 1200px) {
-  .builder-container {
+  .juice-builder-page .builder-container {
     grid-template-columns: 1fr;
     gap: 3rem;
   }
 
-  .builder-sidebar {
+  .juice-builder-page .builder-sidebar {
     position: static;
   }
 }
 
 @media (max-width: 768px) {
-  .options-row {
+  .juice-builder-page .options-row {
     grid-template-columns: 1fr;
   }
 
-  .builder-header h1 {
+  .juice-builder-page .builder-header h1 {
     font-size: 2.5rem;
   }
 
-  .builder-section {
+  .juice-builder-page .builder-section {
     padding: 1.5rem;
   }
 }

@@ -1,0 +1,485 @@
+.coffee-builder-page {
+  padding: 7rem 5% 5rem;
+  background-color: #f8fafc; /* Back to clean grey/white */
+  min-height: 100vh;
+}
+
+.coffee-builder-page .builder-main-title {
+  text-align: center;
+  color: #375340; /* Back to Brand Green */
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+}
+
+.coffee-builder-page .builder-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 4rem;
+  align-items: start;
+}
+
+.coffee-builder-page .builder-section {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03); /* Clean shadow */
+  margin-bottom: 2.5rem;
+}
+
+.coffee-builder-page .section-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.coffee-builder-page .section-num {
+  width: 40px;
+  height: 40px;
+  background: #375340; /* Back to Brand Green */
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1.1rem;
+}
+
+.coffee-builder-page .section-header h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #2c1810;
+}
+
+.coffee-builder-page .section-title-sm {
+  font-size: 1.05rem !important;
+}
+
+/* Coffee Base List - New Layout */
+.coffee-builder-page .coffee-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.coffee-builder-page .coffee-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.coffee-builder-page .coffee-row:hover {
+  border-color: #375340;
+  background: #fdfdfd;
+}
+
+.coffee-builder-page .coffee-row.selected {
+  border-color: #375340;
+  background: #ecfdf5;
+  box-shadow: 0 4px 12px rgba(55, 83, 64, 0.05);
+}
+
+.coffee-builder-page .coffee-row-info {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.coffee-builder-page .coffee-name {
+  font-weight: 600; /* Reduced from 700 */
+  color: #000000; /* Pure black */
+}
+
+.coffee-builder-page .coffee-price-tag {
+  font-size: 0.8rem;
+  color: #375340;
+  font-weight: 700;
+  margin-left: 0.5rem;
+}
+
+.coffee-builder-page .coffee-radio {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #e2e8f0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+}
+
+.coffee-builder-page .coffee-row.selected .coffee-radio {
+  border-color: #375340;
+}
+
+.coffee-builder-page .radio-dot {
+  width: 10px;
+  height: 10px;
+  background: #375340;
+  border-radius: 50%;
+}
+
+/* Options Grid Layouts */
+.coffee-builder-page .options-row {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 2rem;
+}
+
+.coffee-builder-page .pill-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 0.75rem;
+}
+
+.coffee-builder-page .pill-btn {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  padding: 0.8rem;
+  border-radius: 12px;
+  font-weight: 600;
+  color: #6c757d;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.coffee-builder-page .pill-btn:hover {
+  background: #ecfdf5;
+  color: #375340;
+  border-color: #375340;
+}
+
+.coffee-builder-page .pill-btn.active {
+  background: #375340;
+  color: white;
+  border-color: #375340;
+}
+
+/* Milk Selector */
+.coffee-builder-page .milk-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+.coffee-builder-page .milk-btn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.coffee-builder-page .milk-btn:hover {
+  border-color: #375340;
+}
+
+.coffee-builder-page .milk-btn.active {
+  background: #ecfdf5;
+  border-color: #375340;
+  box-shadow: 0 4px 12px rgba(55, 83, 64, 0.05);
+}
+
+.coffee-builder-page .milk-name {
+  font-weight: 600;
+  color: #000000; /* Pure black */
+}
+
+.coffee-builder-page .milk-price {
+  font-size: 0.8rem;
+  color: #375340;
+  font-weight: 700;
+}
+
+/* Sweetness Selector */
+.coffee-builder-page .sweetness-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 0.75rem;
+}
+
+.coffee-builder-page .sweet-btn-coffee {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  padding: 0.8rem;
+  border-radius: 12px;
+  font-weight: 600;
+  color: #6c757d;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.coffee-builder-page .sweet-btn-coffee.active {
+  background: #375340; 
+  color: white;
+  border-color: #375340;
+}
+
+/* Extras Grid */
+.coffee-builder-page .extras-grid-coffee {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.coffee-builder-page .extra-item-coffee {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1rem 1.5rem;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.coffee-builder-page .extra-item-coffee:hover {
+  border-color: #375340;
+}
+
+.coffee-builder-page .extra-item-coffee.selected {
+  border-color: #375340;
+  background: #ecfdf5;
+}
+
+.coffee-builder-page .extra-check-coffee {
+  width: 22px;
+  height: 22px;
+  border: 2px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 3px;
+  transition: all 0.3s;
+}
+
+.coffee-builder-page .extra-item-coffee.selected .extra-check-coffee {
+  background: #375340;
+  border-color: #375340;
+}
+
+.coffee-builder-page .check-inner-coffee {
+  width: 100%;
+  height: 100%;
+  background: white;
+  border-radius: 2px;
+  transform: scale(0);
+  transition: all 0.2s;
+}
+
+.coffee-builder-page .extra-item-coffee.selected .check-inner-coffee {
+  transform: scale(1);
+}
+
+.coffee-builder-page .extra-name-coffee {
+  flex: 1;
+  font-weight: 600;
+  color: #000000; /* Pure black */
+  font-size: 0.85rem;
+}
+
+.coffee-builder-page .extra-price-coffee {
+  font-size: 0.75rem;
+  color: #375340;
+  font-weight: 700;
+}
+
+/* Sidebar Summary */
+.coffee-builder-page .builder-sidebar {
+  position: sticky;
+  top: 8rem;
+}
+
+.coffee-builder-page .summary-card {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 30px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.04);
+  margin-bottom: 2rem;
+}
+
+.coffee-builder-page .summary-card h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #2c1810;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.coffee-builder-page .summary-scroll {
+  max-height: 350px;
+  overflow-y: auto;
+  margin-bottom: 1.5rem;
+  padding-right: 0.5rem;
+}
+
+.coffee-builder-page .summary-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+  font-size: 0.85rem;
+}
+
+.coffee-builder-page .summary-item .label {
+  color: #64748b;
+  font-weight: 500;
+}
+
+.coffee-builder-page .summary-item .value {
+  color: #2c1810;
+  font-weight: 700;
+}
+
+.coffee-builder-page .summary-group {
+  margin-top: 1.25rem;
+}
+
+.coffee-builder-page .group-label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: #375340;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 0.75rem;
+}
+
+.coffee-builder-page .selected-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-left: 0.5rem;
+}
+
+.coffee-builder-page .list-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: #1e293b;
+  font-weight: 600;
+}
+
+.coffee-builder-page .summary-total {
+  background: #f8fafc;
+  padding: 1rem;
+  border-radius: 15px;
+  margin-bottom: 1.5rem;
+  border: 1px solid #f1f5f9;
+}
+
+.coffee-builder-page .total-label {
+  font-size: 0.75rem;
+  color: #64748b;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.coffee-builder-page .total-amount {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #375340; 
+}
+
+.coffee-builder-page .order-btn {
+  width: 100%;
+  background: #375340;
+  color: white;
+  padding: 1rem;
+  border-radius: 50px;
+  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.coffee-builder-page .order-btn:hover {
+  background: #2d4434;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(55, 83, 64, 0.2);
+}
+
+.coffee-builder-page .delivery-info {
+  margin-top: 1.25rem;
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  color: #64748b;
+}
+
+.coffee-builder-page .delivery-info p {
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+
+.coffee-builder-page .promo-card-coffee {
+  background: #f0fdf4; /* Soft light green */
+  padding: 1.5rem;
+  border-radius: 20px;
+  border: 1px solid #bbf7d0; /* Changed from dashed to solid */
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.coffee-builder-page .promo-icon-wrap {
+  width: 40px;
+  height: 40px;
+  background: white;
+  border: 1px solid #bbf7d0;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.coffee-builder-page .promo-text h4 {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #375340;
+}
+
+.coffee-builder-page .promo-text p {
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+/* Responsive */
+@media (max-width: 1100px) {
+  .coffee-builder-page .builder-container {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  .coffee-builder-page .builder-sidebar {
+    position: static;
+  }
+}
+
+@media (max-width: 768px) {
+  .coffee-builder-page .options-row {
+    grid-template-columns: 1fr;
+  }
+  .coffee-builder-page .builder-section {
+    padding: 1.5rem;
+  }
+}

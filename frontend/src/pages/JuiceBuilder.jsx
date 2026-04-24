@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Check, Plus, Minus, ShoppingCart, GlassWater, Leaf, Droplets, Sparkles, ChevronRight, Info } from 'lucide-react';
+import { useCart } from '../context/CartContext';
 import './JuiceBuilder.css';
 
 const FRUITS = [
@@ -76,19 +77,31 @@ const JuiceBuilder = () => {
     }
   };
 
+  const { addToCart } = useCart();
+
   const handleOrder = () => {
     if (selectedFruits.length === 0) {
       alert("Please select at least one fruit for your juice.");
       return;
     }
-    const order = {
-      fruits: selectedFruits,
-      size,
-      sweetness,
-      extras: selectedExtras,
-      totalPrice
+    
+    const fruitNames = selectedFruits.map(f => FRUITS.find(item => item.id === f).name).join(', ');
+    
+    const customJuice = {
+      id: `juice-${Date.now()}`,
+      name: `Custom Juice (${fruitNames})`,
+      price: totalPrice,
+      image: '/juices.png',
+      unit: 'cup',
+      details: {
+        fruits: selectedFruits,
+        size,
+        sweetness,
+        extras: selectedExtras
+      }
     };
-    console.log("Order Placed:", order);
+    
+    addToCart(customJuice);
     alert("Juice added to cart successfully!");
   };
 
