@@ -5,6 +5,7 @@ import Footer from './components/Footer';
 import Home from './pages/Home';
 import Categories from './pages/Categories';
 import Shop from './pages/Shop';
+import JuiceBuilder from './pages/JuiceBuilder';
 import Login from './components/Login';
 import Register from './components/Register';
 
@@ -19,11 +20,11 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/categories" element={<Categories />} />
         <Route path="/shop" element={<Shop />} />
+        <Route path="/juice-bar" element={<JuiceBuilder />} />
         {/* Placeholder routes for future */}
         <Route path="/login" element={<div style={{minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center'}}><h2>Login coming soon</h2></div>} />
         <Route path="/register" element={<div style={{minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center'}}><h2>Register coming soon</h2></div>} />
         <Route path="/cart" element={<div style={{padding: '10rem 5%', textAlign: 'center'}}><h2>Cart coming soon</h2></div>} />
-        <Route path="/juice-bar" element={<div style={{padding: '10rem 5%', textAlign: 'center'}}><h2>Juice Bar coming soon</h2></div>} />
         <Route path="/coffee" element={<div style={{padding: '10rem 5%', textAlign: 'center'}}><h2>Coffee coming soon</h2></div>} />
       </Routes>
       <Footer />
