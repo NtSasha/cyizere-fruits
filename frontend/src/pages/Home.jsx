@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { ArrowRight, ShoppingCart, Apple, Grape, Carrot, ShieldCheck, Truck, Clock, Droplet, Package, Leaf, Search, ChevronDown, LayoutGrid, List, GlassWater, Tag } from 'lucide-react';
+import { ArrowRight, ShoppingCart, Apple, Grape, Carrot, ShieldCheck, Truck, Clock, Droplet, Package, Leaf, Search, ChevronDown, LayoutGrid, List, GlassWater, Tag, Phone, Mail, MapPin, Send, CheckCircle } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import './Home.css';
 
@@ -67,6 +67,70 @@ const Home = () => {
                 <h3 className="circular-cat-title">{cat.name}</h3>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 2.5 About Us Section */}
+      <section className="about-us-section" id="about">
+        <div className="about-container">
+          <div className="section-label">Our Story</div>
+          <div className="about-layout">
+            <div className="about-image-side">
+              <div className="main-image-wrap">
+                <img src="/dark-groceries.png" alt="Fresh Organic Produce" />
+              </div>
+              <div className="sub-image-decoration"></div>
+            </div>
+
+            <div className="about-text-side">
+              <h2 className="about-title">About Cyizere Fruits</h2>
+              <p className="about-intro">
+                At Cyizere Fruits, we believe that nature provides the best ingredients for a healthy life. 
+                What started as a small farm-to-table initiative has grown into Rwanda's most trusted 
+                source for fresh, organic produce and premium beverages.
+              </p>
+              
+              <div className="mission-box">
+                <h4>Our Mission</h4>
+                <p>To empower healthy living by providing affordable, high-quality organic products directly from our fields to your table, ensuring freshness in every bite.</p>
+              </div>
+
+              <div className="about-highlights">
+                <div className="highlight-item">
+                  <div className="h-icon"><Leaf size={20} /></div>
+                  <div className="h-content">
+                    <h5>Fresh & Organic</h5>
+                    <p>100% certified organic produce</p>
+                  </div>
+                </div>
+                <div className="highlight-item">
+                  <div className="h-icon"><Truck size={20} /></div>
+                  <div className="h-content">
+                    <h5>Reliable Delivery</h5>
+                    <p>Fast delivery within 2 hours</p>
+                  </div>
+                </div>
+                <div className="highlight-item">
+                  <div className="h-icon"><GlassWater size={20} /></div>
+                  <div className="h-content">
+                    <h5>Custom Bar</h5>
+                    <p>Personalized juice & coffee mixes</p>
+                  </div>
+                </div>
+                <div className="highlight-item">
+                  <div className="h-icon"><Tag size={20} /></div>
+                  <div className="h-content">
+                    <h5>Best Prices</h5>
+                    <p>Premium quality at fair rates</p>
+                  </div>
+                </div>
+              </div>
+
+              <button className="about-learn-more">
+                Learn more about us <ArrowRight size={18} />
+              </button>
+            </div>
           </div>
         </div>
       </section>
@@ -198,6 +262,106 @@ const Home = () => {
               Subscribe <ArrowRight size={16} />
             </button>
           </form>
+        </div>
+      </section>
+
+      {/* 8. Get in Touch Section */}
+      <section className="contact-section" id="contact">
+        <div className="contact-container">
+          <div className="contact-layout">
+            {/* Left Side: Information */}
+            <div className="contact-info">
+              <h2 className="contact-title centered">Get in Touch</h2>
+              <p className="contact-welcome">
+                Have questions about our fresh produce or need help with an order? 
+                Our team is here to help you experience the best of nature's bounty.
+              </p>
+
+              <div className="contact-details-list">
+                <div className="contact-detail-item">
+                  <div className="detail-icon">
+                    <Phone size={20} />
+                  </div>
+                  <div className="detail-text">
+                    <h4>Phone Number</h4>
+                    <p>+250 788 000 000</p>
+                  </div>
+                </div>
+
+                <div className="contact-detail-item">
+                  <div className="detail-icon">
+                    <Mail size={20} />
+                  </div>
+                  <div className="detail-text">
+                    <h4>Email Address</h4>
+                    <p>info@cyizerefruits.com</p>
+                  </div>
+                </div>
+
+                <div className="contact-detail-item">
+                  <div className="detail-icon">
+                    <MapPin size={20} />
+                  </div>
+                  <div className="detail-text">
+                    <h4>Location</h4>
+                    <p>Kigali, Rwanda | KN 56 St, Nyarugenge</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="response-note">
+                <Clock size={16} />
+                <span>We usually respond within 24 hours</span>
+              </div>
+            </div>
+
+            {/* Right Side: Contact Form */}
+            <div className="contact-form-container">
+              <form className="contact-form" onSubmit={(e) => {
+                e.preventDefault();
+                const btn = e.target.querySelector('.send-msg-btn');
+                const successMsg = e.target.querySelector('.form-success');
+                
+                btn.classList.add('loading');
+                btn.disabled = true;
+                
+                setTimeout(() => {
+                  btn.classList.remove('loading');
+                  successMsg.classList.add('show');
+                  e.target.reset();
+                  setTimeout(() => {
+                    successMsg.classList.remove('show');
+                    btn.disabled = false;
+                  }, 5000);
+                }, 1500);
+              }}>
+                <div className="form-group">
+                  <label>Full Name</label>
+                  <input type="text" placeholder="Your Name" required />
+                </div>
+                
+                <div className="form-group">
+                  <label>Email Address</label>
+                  <input type="email" placeholder="Your Email" required />
+                </div>
+                
+                <div className="form-group">
+                  <label>Message</label>
+                  <textarea placeholder="How can we help you?" required rows="5"></textarea>
+                </div>
+
+                <button type="submit" className="send-msg-btn">
+                  <span>Send Message</span>
+                  <Send size={18} />
+                </button>
+
+                <div className="form-success">
+                  <CheckCircle size={18} />
+                  <span>Message sent successfully! We'll get back to you soon.</span>
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
       </section>
     </div>
