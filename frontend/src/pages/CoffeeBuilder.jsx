@@ -4,11 +4,11 @@ import { useCart } from '../context/CartContext';
 import './CoffeeBuilder.css';
 
 const COFFEE_TYPES = [
-  { id: 'espresso', name: 'Espresso', price: 0, image: '/coffee-cup.png' },
-  { id: 'americano', name: 'Americano', price: 500, image: '/coffee-cup.png' },
-  { id: 'latte', name: 'Latte', price: 1000, image: '/coffee-cup.png' },
-  { id: 'cappuccino', name: 'Cappuccino', price: 1000, image: '/coffee-cup.png' },
-  { id: 'mocha', name: 'Mocha', price: 1200, image: '/coffee-cup.png' }
+  { id: 'espresso', name: 'Espresso', price: 0, image: '/coffee.png' },
+  { id: 'americano', name: 'Americano', price: 500, image: '/coffee.png' },
+  { id: 'latte', name: 'Latte', price: 1000, image: '/coffee.png' },
+  { id: 'cappuccino', name: 'Cappuccino', price: 1000, image: '/coffee.png' },
+  { id: 'mocha', name: 'Mocha', price: 1200, image: '/coffee.png' }
 ];
 
 const SIZES = [
@@ -85,7 +85,7 @@ const CoffeeBuilder = () => {
       id: `coffee-${Date.now()}`,
       name: `Custom ${typeName} (${sizeName})`,
       price: totalPrice,
-      image: '/coffee-cup.png',
+      image: '/coffee.png',
       unit: 'cup',
       details: {
         type: selectedType,

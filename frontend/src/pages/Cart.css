@@ -55,10 +55,10 @@
 
 .cart-item-card {
   display: flex;
-  gap: 1.5rem;
+  gap: 1rem;
   background: white;
-  padding: 1.5rem;
-  border-radius: 20px;
+  padding: 1rem;
+  border-radius: 16px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   border: 1px solid rgba(0, 0, 0, 0.05);
@@ -70,9 +70,9 @@
 }
 
 .item-image {
-  width: 120px;
-  height: 120px;
-  border-radius: 15px;
+  width: 80px;
+  height: 80px;
+  border-radius: 10px;
   overflow: hidden;
   background: #f0f4f0;
   flex-shrink: 0;
@@ -92,9 +92,10 @@
 }
 
 .item-info h3 {
-  font-size: 1.25rem;
+  font-size: 1.1rem;
+  font-weight: 500;
   color: #1a1a1a;
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.2rem;
 }
 
 .item-price {
@@ -150,8 +151,8 @@
 }
 
 .item-subtotal {
-  font-weight: 700;
-  font-size: 1.1rem;
+  font-weight: 600;
+  font-size: 1rem;
   color: #375340;
 }
 
@@ -357,6 +358,7 @@
 @media (max-width: 1024px) {
   .cart-layout {
     grid-template-columns: 1fr;
+    gap: 2rem;
   }
   
   .summary-card {
@@ -364,22 +366,82 @@
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
+  .cart-page {
+    padding: 6rem 4% 3rem;
+  }
+
+  .cart-header {
+    margin-bottom: 2rem;
+  }
+
+  .back-btn {
+    position: static;
+    transform: none;
+    margin-bottom: 1rem;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .back-btn:hover {
+    transform: translateX(-5px);
+  }
+
   .cart-item-card {
-    flex-direction: column;
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .item-image {
+    width: 70px;
+    height: 70px;
+  }
+
+  .item-info h3 {
+    font-size: 1.1rem;
+  }
+
+  .qty-value {
+    width: 30px;
+  }
+}
+
+@media (max-width: 640px) {
+  .cart-item-card {
+    flex-direction: row;
+    align-items: center;
+    text-align: left;
   }
   
   .item-image {
+    width: 70px;
+    height: 70px;
+  }
+
+  .item-details {
     width: 100%;
-    height: 200px;
   }
   
   .item-actions {
-    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-between;
     gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .quantity-controls {
+    width: auto;
   }
   
   .cart-header h1 {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
+  }
+
+  .promo-code {
+    flex-direction: column;
+  }
+
+  .promo-code button {
+    padding: 0.8rem;
   }
 }

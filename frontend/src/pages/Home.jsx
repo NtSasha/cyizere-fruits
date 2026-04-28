@@ -20,7 +20,7 @@ const Home = () => {
   return (
     <div className="home-page">
       {/* 1. Hero Section */}
-      <section className="hero" style={{ backgroundImage: "url('/hero.png')" }}>
+      <section className="hero">
         <div className="hero-content animate-up">
           <h1>Freshness delivered <br />to your doorstep.</h1>
           <p>Hand-picked, organic groceries sourced directly from local farms.</p>
@@ -80,7 +80,6 @@ const Home = () => {
               <div className="main-image-wrap">
                 <img src="/dark-groceries.png" alt="Fresh Organic Produce" />
               </div>
-              <div className="sub-image-decoration"></div>
             </div>
 
             <div className="about-text-side">
@@ -142,15 +141,9 @@ const Home = () => {
         </div>
 
 
-        <div className="product-carousel-container">
-          <div className="product-carousel">
+        <div className="product-grid-container">
+          <div className="product-grid">
             {[
-              { id: 1, name: 'Fresh lettuce', price: 'RWF 1,200', unit: '1 Kg', category: 'Vegetables', img: '/lettuce.jpg' },
-              { id: 2, name: 'Brocoli', price: 'RWF 2,500', unit: '1 Kg', category: 'Fruits', img: '/brocoli.jpg' },
-              { id: 3, name: 'Pineapple', price: 'RWF 4,500', unit: '500g', category: 'Fruits', img: '/pineapple.png' },
-              { id: 4, name: 'Eggplant', price: 'RWF 8,000', unit: '250g', category: 'Coffee', img: '/eggplant.png' },
-              { id: 5, name: 'Carrots', price: 'RWF 3,500', unit: 'Pack', category: 'Organic', img: '/Carrots.jpg' },
-              { id: 6, name: 'Fresh green peas', price: 'RWF 1,800', unit: '500g', category: 'Vegetables', img: '/peas.jpg' },
               { id: 7, name: 'Oranges', price: 'RWF 2,000', unit: '500ml', category: 'Juices', img: '/orange.jpg' },
               { id: 8, name: 'Sweet potatoes', price: 'RWF 1,500', unit: '1 Kg', category: 'Fruits', img: '/sweet-potatoes.jpg' },
               { id: 9, name: 'Potatoes', price: 'RWF 3,200', unit: '1 Kg', category: 'Fruits', img: '/Potatoes.jpg' },
@@ -173,6 +166,7 @@ const Home = () => {
                 </div>
                 <div className="tp-info">
                   <h3 className="tp-title">{product.name}</h3>
+                  <span className="tp-unit">{product.unit}</span>
                   <div className="tp-footer">
                     <div className="tp-price-wrap">
                       <span className="tp-price">{product.price}</span>

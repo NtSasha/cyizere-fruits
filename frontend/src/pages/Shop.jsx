@@ -279,23 +279,22 @@ const Shop = () => {
                   {cat.name}
                 </span>
               ))}
-            </div>
-
-            <div className="view-toggle">
-              <button 
-                className={`view-btn ${viewMode === 'grid' ? 'active' : ''}`}
-                onClick={() => setViewMode('grid')}
-                title="Grid View"
-              >
-                <LayoutGrid size={20} />
-              </button>
-              <button 
-                className={`view-btn ${viewMode === 'list' ? 'active' : ''}`}
-                onClick={() => setViewMode('list')}
-                title="List View"
-              >
-                <List size={20} />
-              </button>
+              <div className="view-toggle">
+                <button 
+                  className={`view-btn ${viewMode === 'grid' ? 'active' : ''}`}
+                  onClick={() => setViewMode('grid')}
+                  title="Grid View"
+                >
+                  <LayoutGrid size={20} />
+                </button>
+                <button 
+                  className={`view-btn ${viewMode === 'list' ? 'active' : ''}`}
+                  onClick={() => setViewMode('list')}
+                  title="List View"
+                >
+                  <List size={20} />
+                </button>
+              </div>
             </div>
           </div>
         </div>

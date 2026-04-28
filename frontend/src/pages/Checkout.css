@@ -70,6 +70,10 @@
   color: #375340;
 }
 
+.section-title::after {
+  display: none;
+}
+
 .section-title h2 {
   font-size: 1.25rem;
   color: #1a1a1a;
@@ -392,17 +396,57 @@
 @media (max-width: 1024px) {
   .checkout-layout {
     grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .checkout-summary .summary-card {
+    position: static;
+    min-height: auto;
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
+  .checkout-page {
+    padding: 6rem 4% 3rem;
+  }
+
+  .form-section {
+    padding: 1.5rem;
+  }
+
+  .back-btn {
+    position: static;
+    transform: none;
+    margin-bottom: 1.5rem;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .checkout-items-list {
+    max-height: 300px;
+  }
+}
+
+@media (max-width: 640px) {
   .input-group {
     grid-template-columns: 1fr;
+    gap: 1rem;
   }
+  
   .input-field.full {
     grid-column: span 1;
   }
+  
   .payment-options {
     grid-template-columns: 1fr;
+  }
+
+  .success-card {
+    padding: 2.5rem 1.5rem;
+    border-radius: 24px;
+  }
+
+  .checkout-header h1 {
+    font-size: 1.6rem;
   }
 }

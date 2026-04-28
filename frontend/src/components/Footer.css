@@ -140,6 +140,9 @@
 
 /* Responsive */
 @media (max-width: 1024px) {
+  .footer {
+    padding: 4rem 5% 2rem;
+  }
   .footer-grid-v2 {
     grid-template-columns: 1fr;
     gap: 3rem;

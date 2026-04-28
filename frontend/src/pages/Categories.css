@@ -50,16 +50,16 @@
 
 .categories-header h1 {
   font-family: 'Outfit', sans-serif;
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: 700;
-  color: #375340; /* Updated to match Featured Products */
-  margin-bottom: 0.5rem;
+  color: #375340;
+  margin-bottom: 1rem;
   line-height: 1.1;
 }
 
 .categories-header p {
   color: #64748b;
-  font-size: 1.05rem;
+  font-size: 1.1rem;
   line-height: 1.6;
 }
 
@@ -168,32 +168,27 @@
 }
 
 /* Responsive */
-@media (max-width: 1200px) {
-  .categories-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (max-width: 992px) {
+@media (max-width: 1024px) {
   .categories-grid {
     grid-template-columns: repeat(2, 1fr);
   }
   
   .categories-header h1 {
-    font-size: 2.8rem;
+    font-size: 2.2rem;
   }
 }
 
-@media (max-width: 576px) {
+@media (max-width: 640px) {
   .categories-grid {
     grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
   
   .categories-header h1 {
-    font-size: 2.2rem;
+    font-size: 1.8rem;
   }
   
   .categories-page {
-    padding-top: 8rem;
+    padding-top: 6.5rem;
   }
 }

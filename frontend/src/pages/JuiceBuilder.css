@@ -283,6 +283,9 @@
 .juice-builder-page .builder-sidebar {
   position: sticky;
   top: 8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
 .juice-builder-page .promo-card {
@@ -325,7 +328,6 @@
   padding: 2.5rem;
   border-radius: 30px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.04);
-  margin-bottom: 2rem;
 }
 
 .juice-builder-page .summary-card h3 {
@@ -459,28 +461,56 @@
   line-height: 1.5;
 }
 
-/* Responsive */
-@media (max-width: 1200px) {
+/* Responsive Improvements */
+@media (max-width: 1024px) {
   .juice-builder-page .builder-container {
     grid-template-columns: 1fr;
-    gap: 3rem;
+    gap: 2.5rem;
   }
 
   .juice-builder-page .builder-sidebar {
     position: static;
+    max-width: 600px;
+    margin: 0 auto;
   }
 }
 
 @media (max-width: 768px) {
+  .juice-builder-page {
+    padding: 6.5rem 4% 4rem;
+  }
+
   .juice-builder-page .options-row {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .juice-builder-page .fruit-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .juice-builder-page .fruit-img-wrap {
+    width: 80px;
+    height: 80px;
+  }
+
+  .juice-builder-page .extras-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .juice-builder-page .size-grid,
+  .juice-builder-page .sweet-selector {
     grid-template-columns: 1fr;
   }
 
   .juice-builder-page .builder-header h1 {
-    font-size: 2.5rem;
+    font-size: 1.8rem;
   }
 
-  .juice-builder-page .builder-section {
-    padding: 1.5rem;
+  .juice-builder-page .order-btn {
+    width: 100%;
   }
 }
