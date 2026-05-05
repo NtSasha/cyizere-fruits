@@ -56,8 +56,32 @@ const removeFromCart = async (req, res) => {
     }
 };
 
+const syncCart = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const { items } = req.body;
+
+        await pool.query("DELETE FROM cart WHERE user_id = $1", [userId]);
+
+        if (items && items.length > 0) {
+            for (const item of items) {
+                await pool.query(
+                    `INSERT INTO cart (user_id, product_id, quantity)
+                     VALUES ($1, $2, $3)`,
+                    [userId, item.id, item.quantity]
+                );
+            }
+        }
+
+        res.json({ message: "Cart synced" });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
 module.exports = {
     addToCart,
     getCart,
-    removeFromCart
+    removeFromCart,
+    syncCart
 };

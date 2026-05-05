@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { getApiUrl } from '../utils/api';
 
 const CartContext = createContext();
 
@@ -16,8 +17,39 @@ export const CartProvider = ({ children }) => {
     return savedCart ? JSON.parse(savedCart) : [];
   });
 
+  // Load cart from DB on login
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      fetch(getApiUrl('/cart'), {
+        headers: { 'Authorization': `Bearer ${token}` }
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          // Merge local cart with DB cart or prioritize DB cart
+          setCartItems(data);
+        }
+      })
+      .catch(err => console.error("Error fetching cart from DB:", err));
+    }
+  }, []);
+
+  // Save cart to LocalStorage AND DB
   useEffect(() => {
     localStorage.setItem('cyizere_cart', JSON.stringify(cartItems));
+    
+    const token = localStorage.getItem('token');
+    if (token && cartItems.length > 0) {
+      fetch(getApiUrl('/cart/sync'), {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ items: cartItems })
+      }).catch(err => console.error("Error syncing cart to DB:", err));
+    }
   }, [cartItems]);
 
   const addToCart = (product) => {

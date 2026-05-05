@@ -723,7 +723,7 @@ section {
   display: none;
 }
 
-.templated-product-card {
+.featured-product-card {
   width: 100%;
   background: #ffffff;
   border-radius: 20px;
@@ -739,36 +739,36 @@ section {
   flex-direction: column;
 }
 
-.templated-product-card:hover {
+.featured-product-card:hover {
   box-shadow: 0 20px 40px rgba(55, 83, 64, 0.08);
   border: 1.5px solid #d4af37;
   transform: translateY(-10px);
 }
 
-.tp-img-wrap {
+.fp-img-wrap {
   width: 100%;
   height: 150px;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 1.2rem;
-  background: transparent;
+  background: #ffffff;
   border-radius: 15px;
   overflow: hidden;
 }
 
-.tp-img-wrap img {
+.fp-img-wrap img {
   max-width: 90%;
   max-height: 90%;
   object-fit: contain;
   transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.templated-product-card:hover .tp-img-wrap img {
+.featured-product-card:hover .fp-img-wrap img {
   transform: scale(1.15) rotate(2deg);
 }
 
-.tp-badge {
+.fp-badge {
   position: absolute;
   top: 12px;
   left: 12px;
@@ -785,39 +785,39 @@ section {
   border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-.tp-info {
+.fp-info {
   display: flex;
   flex-direction: column;
 }
 
-.tp-title {
-  font-size: 1rem;
+.fp-title {
+  font-size: 0.95rem;
   font-weight: 500;
   color: #334155;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
   line-height: 1.3;
 }
 
-.tp-unit {
+.fp-unit {
   font-size: 0.85rem;
   color: #94a3b8;
   font-weight: 600;
   margin-bottom: 1.25rem;
 }
 
-.tp-footer {
+.fp-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.tp-price {
-  font-size: 1.1rem;
+.fp-price {
+  font-size: 1rem;
   font-weight: 600;
   color: #1a1a1a;
 }
 
-.tp-cart-btn {
+.fp-cart-btn {
   width: 38px;
   height: 38px;
   border-radius: 12px;
@@ -831,7 +831,7 @@ section {
   transition: all 0.3s ease;
 }
 
-.tp-cart-btn:hover {
+.fp-cart-btn:hover {
   background: #375340;
   color: white;
   transform: scale(1.1);
@@ -1179,7 +1179,7 @@ section {
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
+  gap: 1rem; /* Precise gap for consistent spacing */
 }
 
 .form-group label {
@@ -1190,10 +1190,10 @@ section {
 
 .form-group input, 
 .form-group textarea {
-  padding: 1rem 1.25rem;
+  padding: 0.9rem 1.25rem;
   background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.05); /* Very thin, subtle default border */
+  border-radius: 18px;
   font-size: 1rem;
   font-family: inherit;
   outline: none;
@@ -1202,9 +1202,11 @@ section {
 
 .form-group input:focus, 
 .form-group textarea:focus {
-  border-color: #375340;
+  border: 1px solid #375340; /* Sharp, 1px dark green border */
   background: white;
-  box-shadow: 0 0 0 4px rgba(55, 83, 64, 0.05);
+  box-shadow: 0 0 0 5px #f0fdf4; /* Light green halo matching image */
+  outline: none;
+  border-radius: 18px;
 }
 
 .send-msg-btn {

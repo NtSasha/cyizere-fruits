@@ -1,10 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ArrowRight, ShoppingCart, Apple, Grape, Carrot, ShieldCheck, Truck, Clock, Droplet, Package, Leaf, Search, ChevronDown, LayoutGrid, List, GlassWater, Tag, Phone, Mail, MapPin, Send, CheckCircle } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
+import { useCart } from '../context/CartContext';
 import './Home.css';
+
+import { getApiUrl } from '../utils/api';
 
 const Home = () => {
   const { hash } = useLocation();
+  const [featuredProducts, setFeaturedProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const { addToCart } = useCart();
 
   useEffect(() => {
     if (hash) {
@@ -16,6 +22,48 @@ const Home = () => {
       }
     }
   }, [hash]);
+
+  // Fetch products from backend for the featured section
+  useEffect(() => {
+    const fetchFeatured = async () => {
+      try {
+        const res = await fetch(getApiUrl('/products'));
+        if (res.ok) {
+          const data = await res.json();
+          
+          // The specific list of products requested by the user
+          const targetNames = [
+            'Potatoes', 
+            'Carrots', 
+            'Organic Red Pepper', 
+            'Green Cucumber', 
+            'Red Apples', 
+            'Valencia Oranges', 
+            'Ripe Mangoes', 
+            'Eggplant'
+          ];
+
+          // Find these specific products in our database
+          const featured = targetNames.map(name => 
+            data.find(p => p.name === name)
+          ).filter(p => p !== undefined);
+
+          // If for some reason we can't find some, pad with original items
+          if (featured.length < 8) {
+            const others = data.filter(p => !featured.find(f => f.id === p.id)).slice(0, 8 - featured.length);
+            setFeaturedProducts([...featured, ...others]);
+          } else {
+            setFeaturedProducts(featured);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch featured products:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchFeatured();
+  }, []);
 
   return (
     <div className="home-page">
@@ -45,7 +93,7 @@ const Home = () => {
               { name: 'Vegetables', image: '/vegetables.png' },
               { name: 'Juices', image: '/juices.png', scale: '0.85' },
               { name: 'Fruit Packs', image: '/fruit-packs.png', scale: '1.2' },
-              { name: 'Organic Products', image: '/organic-new.png', scale: '1.3', objectPosition: 'center 40%' },
+              { name: 'Organic Products', image: '/pepper.jpg', scale: '1.2', objectPosition: 'center' },
               { name: 'Seasonal fruits and vegetables', image: '/seasonal-full-mix.png', scale: '1.2' },
               { name: 'Coffee', image: '/coffee.png', scale: '1' },
               { name: 'Juice Bar', image: '/juices.png', scale: '0.85' },
@@ -143,35 +191,36 @@ const Home = () => {
 
         <div className="product-grid-container">
           <div className="product-grid">
-            {[
-              { id: 7, name: 'Oranges', price: 'RWF 2,000', unit: '500ml', category: 'Juices', img: '/orange.jpg' },
-              { id: 8, name: 'Sweet potatoes', price: 'RWF 1,500', unit: '1 Kg', category: 'Fruits', img: '/sweet-potatoes.jpg' },
-              { id: 9, name: 'Potatoes', price: 'RWF 3,200', unit: '1 Kg', category: 'Fruits', img: '/Potatoes.jpg' },
-              { id: 10, name: 'Fresh cabbage', price: 'RWF 1,000', unit: '1 Kg', category: 'Vegetables', img: '/cabbage.jpg' },
-              { id: 11, name: 'Organic bananas', price: 'RWF 2,200', unit: '1 Bunch', category: 'Fruits', img: '/banana.jpg' },
-              { id: 12, name: 'Cucumber', price: 'RWF 800', unit: 'Pack', category: 'Vegetables', img: '/cucumber.jpg' },
-              { id: 13, name: 'Fresh mangoes', price: 'RWF 2,500', unit: '1 Kg', category: 'Fruits', img: '/mango.jpg' },
-              { id: 14, name: 'Pepper', price: 'RWF 5,000', unit: '500g', category: 'Organic', img: '/pepper.jpg' },
-            ].map(product => (
+            {loading ? (
+              <p style={{ textAlign: 'center', width: '100%', gridColumn: '1 / -1' }}>Loading featured products...</p>
+            ) : featuredProducts.map(product => (
               <div
-                className="templated-product-card"
+                className="featured-product-card"
                 key={product.id}
                 onClick={(e) => {
                   e.currentTarget.classList.add('clicked-anim');
                   setTimeout(() => e.currentTarget.classList.remove('clicked-anim'), 400);
                 }}
               >
-                <div className="tp-img-wrap">
-                  <img src={product.img} alt={product.name} />
+                <div className="fp-img-wrap">
+                  {product.badge && (
+                    <span className={`fp-badge ${product.badge.toLowerCase() === 'new' ? 'badge-new' : product.badge.toLowerCase() === 'organic' ? 'badge-organic' : 'badge-deal'}`}>
+                      {product.badge}
+                    </span>
+                  )}
+                  <img src={product.image} alt={product.name} />
                 </div>
-                <div className="tp-info">
-                  <h3 className="tp-title">{product.name}</h3>
-                  <span className="tp-unit">{product.unit}</span>
-                  <div className="tp-footer">
-                    <div className="tp-price-wrap">
-                      <span className="tp-price">{product.price}</span>
+                <div className="fp-info">
+                  <h3 className="fp-title">{product.name}</h3>
+                  <span className="fp-unit">{product.unit}</span>
+                  <div className="fp-footer">
+                    <div className="fp-price-wrap">
+                      <span className="fp-price">RWF {Number(product.price).toLocaleString()}</span>
                     </div>
-                    <button className="tp-cart-btn" onClick={(e) => e.stopPropagation()}>
+                    <button className="fp-cart-btn" onClick={(e) => {
+                      e.stopPropagation();
+                      addToCart(product);
+                    }}>
                       <ShoppingCart size={18} />
                     </button>
                   </div>
@@ -265,7 +314,7 @@ const Home = () => {
           <div className="contact-layout">
             {/* Left Side: Information */}
             <div className="contact-info">
-              <h2 className="contact-title centered">Get in Touch</h2>
+              <h2 className="contact-title centered">Get in touch</h2>
               <p className="contact-welcome">
                 Have questions about our fresh produce or need help with an order? 
                 Our team is here to help you experience the best of nature's bounty.
@@ -330,18 +379,18 @@ const Home = () => {
                 }, 1500);
               }}>
                 <div className="form-group">
-                  <label>Full Name</label>
-                  <input type="text" placeholder="Your Name" required />
+                  <label htmlFor="contact-name">Full Name</label>
+                  <input type="text" id="contact-name" placeholder="Your Name" required />
                 </div>
                 
                 <div className="form-group">
-                  <label>Email Address</label>
-                  <input type="email" placeholder="Your Email" required />
+                  <label htmlFor="contact-email">Email Address</label>
+                  <input type="email" id="contact-email" placeholder="Your Email" required />
                 </div>
                 
                 <div className="form-group">
-                  <label>Message</label>
-                  <textarea placeholder="How can we help you?" required rows="5"></textarea>
+                  <label htmlFor="contact-message">Message</label>
+                  <textarea id="contact-message" placeholder="How can we help you?" required rows="5"></textarea>
                 </div>
 
                 <button type="submit" className="send-msg-btn">

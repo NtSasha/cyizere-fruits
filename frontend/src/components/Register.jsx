@@ -1,8 +1,15 @@
 import React, { useState } from 'react';
 import { X, Mail, Lock, User, Phone } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
+import toast from 'react-hot-toast';
 import './Login.css'; 
+import { getApiUrl } from '../utils/api';
 
 const Register = ({ isOpen, onClose }) => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const { login } = useAuth();
+
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -10,11 +17,64 @@ const Register = ({ isOpen, onClose }) => {
     password: '',
   });
 
+  // Reset form when modal closes or opens
+  React.useEffect(() => {
+    if (!isOpen) {
+      setFormData({
+        fullName: '',
+        email: '',
+        phone: '',
+        password: '',
+      });
+      setError(null);
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Register submitted:', formData);
+    setLoading(true);
+    setError(null);
+    
+    try {
+      const response = await fetch(getApiUrl('/users/register'), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.fullName,
+          email: formData.email,
+          phone: formData.phone,
+          password: formData.password
+        })
+      });
+      
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.message || data.error || 'Failed to register');
+      }
+      
+      toast.success('Account created successfully!');
+      login(data.user, data.token);
+      setFormData({
+        fullName: '',
+        email: '',
+        phone: '',
+        password: '',
+      });
+      onClose();
+    } catch (err) {
+      console.error("Registration technical info:", err);
+      const friendlyMessage = err.message.includes('already exists') 
+        ? "This email is already registered. Try logging in instead!"
+        : "We couldn't create your account right now. Please check your connection and try again.";
+      
+      setError(friendlyMessage);
+      toast.error(friendlyMessage);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -29,6 +89,8 @@ const Register = ({ isOpen, onClose }) => {
             <h2>Create Account</h2>
             <p>Join our community of fresh fruit lovers.</p>
           </div>
+
+          {error && <div className="auth-error-message" style={{ color: 'red', marginBottom: '15px', fontSize: '14px', textAlign: 'center' }}>{error}</div>}
 
           <form className="auth-modal-form" onSubmit={handleSubmit}>
             <div className="modal-form-group">
@@ -83,7 +145,9 @@ const Register = ({ isOpen, onClose }) => {
               </div>
             </div>
 
-            <button type="submit" className="modal-primary-btn">Create Account</button>
+            <button type="submit" className="modal-primary-btn" disabled={loading}>
+              {loading ? 'Creating Account...' : 'Create Account'}
+            </button>
           </form>
         </div>
       </div>

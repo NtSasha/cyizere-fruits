@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, MapPin, Phone, User, Mail, CreditCard, ChevronRight, CheckCircle, Truck } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { useFlutterwave, closePaymentModal } from 'flutterwave-react-v3';
 import './Checkout.css';
+import { getApiUrl } from '../utils/api';
 
 const Checkout = () => {
   const { cartItems, cartTotal, clearCart } = useCart();
@@ -25,13 +27,78 @@ const Checkout = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  const config = {
+    public_key: 'FLWPUBK_TEST-02b9b536416d68aca4111357593c723f-X', // Replace with your Flutterwave Public Key
+    tx_ref: Date.now().toString(),
+    amount: total,
+    currency: 'RWF',
+    payment_options: 'card,mobilemoneyrwanda', // Support for Cards & MTN Mobile Money in Rwanda
+    customer: {
+      email: formData.email,
+      phone_number: formData.phone,
+      name: formData.fullName,
+    },
+    customizations: {
+      title: 'Cyizere Fruits',
+      description: 'Payment for your fresh fruits and juices',
+      logo: 'https://cdn-icons-png.flaticon.com/512/3194/3194591.png',
+    },
+  };
+
+  const handleFlutterPayment = useFlutterwave(config);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Simulate order placement
-    setStep(3); // Success step
-    setTimeout(() => {
-      clearCart();
-    }, 500);
+    
+    handleFlutterPayment({
+      callback: async (response) => {
+        console.log("Payment successful:", response);
+        if (response.status === "successful" || response.status === "completed") {
+          
+          try {
+            // Save order to the backend
+            const res = await fetch(getApiUrl('/orders/guest'), {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                items: cartItems,
+                customer: formData
+              })
+            });
+
+            if (res.ok) {
+              const data = await res.json();
+              console.log("Order saved to DB:", data);
+              setStep(3); // Go to Success step
+              setTimeout(() => {
+                clearCart();
+                setFormData({
+                  firstName: '',
+                  lastName: '',
+                  email: '',
+                  phone: '',
+                  address: '',
+                  city: '',
+                });
+              }, 500);
+            } else {
+              console.error("Failed to save order to backend");
+              // Still show success since payment went through, but log error
+              setStep(3);
+              setTimeout(() => clearCart(), 500);
+            }
+          } catch (error) {
+            console.error("Error communicating with backend:", error);
+            setStep(3);
+            setTimeout(() => clearCart(), 500);
+          }
+        }
+        closePaymentModal(); // Close modal programmatically
+      },
+      onClose: () => {
+        console.log("Payment modal closed by user");
+      },
+    });
   };
 
   if (cartItems.length === 0 && step !== 3) {
@@ -215,12 +282,11 @@ const Checkout = () => {
             <div className="checkout-items-list">
               {cartItems.map((item) => (
                 <div key={item.id} className="checkout-item">
-                  <div className="item-thumb">
-                    <img src={item.image} alt={item.name} />
-                    <span className="item-qty">{item.quantity}</span>
-                  </div>
                   <div className="item-info-sm">
-                    <p className="item-name-sm">{item.name}</p>
+                    <p className="item-name-sm">
+                      <span className="item-qty-badge">{item.quantity}x</span>
+                      {item.name}
+                    </p>
                     <p className="item-price-sm">RWF {(item.price * item.quantity).toLocaleString()}</p>
                   </div>
                 </div>

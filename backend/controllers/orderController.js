@@ -1,5 +1,65 @@
 const pool = require("../db");
-const { clearCart } = require("../routes/cartRoutes");
+
+
+const createGuestOrder = async (req, res) => {
+    const client = await pool.connect();
+    try {
+        await client.query("BEGIN");
+        
+        const { items, customer } = req.body;
+        if (!items || items.length === 0) {
+            return res.status(400).json({ error: "No items provided" });
+        }
+
+        let totalPrice = 0;
+        for (let item of items) {
+            // Using price sent from frontend since products are hardcoded there
+            // In production, ALWAYS verify price from database
+            const price = item.price;
+            totalPrice += price * item.quantity;
+        }
+
+        // Use a dummy user_id or NULL if allowed. Many schemas allow NULL for guest orders.
+        // We will pass NULL and let the DB handle it or fail if constrained. 
+        // A better approach is often to create a guest user or use a specific guest ID.
+        // For this, we'll try NULL first. If it fails, we catch the error.
+        let orderResult;
+        try {
+            orderResult = await client.query(
+                `INSERT INTO orders (user_id, total_price, status) VALUES (NULL, $1, 'paid') RETURNING *`,
+                [totalPrice]
+            );
+        } catch (err) {
+            // Fallback: If user_id is NOT NULL, try inserting with user_id = 1 (dummy user)
+            orderResult = await client.query(
+                `INSERT INTO orders (user_id, total_price, status) VALUES (1, $1, 'paid') RETURNING *`,
+                [totalPrice]
+            );
+        }
+
+        const orderId = orderResult.rows[0].id;
+
+        for (let item of items) {
+            const price = item.price;
+
+            await client.query(
+                `INSERT INTO order_items (order_id, product_id, quantity, price) VALUES ($1, $2, $3, $4)`,
+                [orderId, item.id, item.quantity, price]
+            );
+            
+            // Note: Skipping stock update since products might not exist in the DB
+        }
+
+        await client.query("COMMIT");
+        res.status(201).json({ message: "Order placed successfully", order: orderResult.rows[0] });
+
+    } catch (err) {
+        await client.query("ROLLBACK");
+        res.status(500).json({ error: err.message });
+    } finally {
+        client.release();
+    }
+};
 
 const createOrder = async (req, res) => {
     const client = await pool.connect();
@@ -285,6 +345,7 @@ const getOrderDetails = async (req, res) => {
 
 module.exports = {
     createOrder,
+    createGuestOrder,
     getOrderById,
     getMyOrders,
     checkout,

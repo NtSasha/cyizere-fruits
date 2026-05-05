@@ -2,43 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { Check, ShoppingCart, Coffee, Info, Sparkles, GlassWater, ThermometerSun, Droplets } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import './CoffeeBuilder.css';
+import { getApiUrl } from '../utils/api';
 
-const COFFEE_TYPES = [
-  { id: 'espresso', name: 'Espresso', price: 0, image: '/coffee.png' },
-  { id: 'americano', name: 'Americano', price: 500, image: '/coffee.png' },
-  { id: 'latte', name: 'Latte', price: 1000, image: '/coffee.png' },
-  { id: 'cappuccino', name: 'Cappuccino', price: 1000, image: '/coffee.png' },
-  { id: 'mocha', name: 'Mocha', price: 1200, image: '/coffee.png' }
-];
-
-const SIZES = [
-  { id: 'small', name: 'Small', price: 0 },
-  { id: 'medium', name: 'Medium', price: 500 },
-  { id: 'large', name: 'Large', price: 1000 }
-];
-
-const STRENGTHS = ['Light', 'Regular', 'Strong', 'Extra Strong'];
-
-const MILK_TYPES = [
-  { id: 'none', name: 'No Milk', price: 0 },
-  { id: 'regular', name: 'Regular Milk', price: 0 },
-  { id: 'almond', name: 'Almond Milk', price: 500 },
-  { id: 'soy', name: 'Soy Milk', price: 500 },
-  { id: 'oat', name: 'Oat Milk', price: 600 }
-];
-
-const SWEETNESS = ['No sugar', 'Low', 'Medium', 'High', 'Stevia', 'Brown Sugar'];
-
-const EXTRAS = [
-  { id: 'ice', name: 'Ice', price: 0 },
-  { id: 'cream', name: 'Whipped Cream', price: 300 },
-  { id: 'caramel', name: 'Caramel Syrup', price: 400 },
-  { id: 'vanilla', name: 'Vanilla Syrup', price: 400 },
-  { id: 'chocolate', name: 'Chocolate Syrup', price: 400 },
-  { id: 'cinnamon', name: 'Cinnamon', price: 100 }
-];
+// Ingredients will be loaded dynamically from the database
 
 const CoffeeBuilder = () => {
+  const [loading, setLoading] = useState(true);
+  const [COFFEE_TYPES, setCoffeeTypes] = useState([]);
+  const [SIZES, setSizes] = useState([]);
+  const [STRENGTHS, setStrengths] = useState([]);
+  const [MILK_TYPES, setMilkTypes] = useState([]);
+  const [SWEETNESS, setSweetnessOptions] = useState([]);
+  const [EXTRAS, setExtras] = useState([]);
+
   const [selectedType, setSelectedType] = useState('espresso');
   const [size, setSize] = useState('small');
   const [strength, setStrength] = useState('Regular');
@@ -48,20 +24,38 @@ const CoffeeBuilder = () => {
   const [totalPrice, setTotalPrice] = useState(1500);
 
   useEffect(() => {
+    fetch(getApiUrl('/builder?builder_type=coffee'))
+      .then(res => res.json())
+      .then(data => {
+        setCoffeeTypes(data.filter(i => i.category === 'type').map(i => ({ id: i.code, ...i })));
+        setSizes(data.filter(i => i.category === 'size').map(i => ({ id: i.code, ...i })));
+        setStrengths(data.filter(i => i.category === 'strength').map(i => i.code));
+        setMilkTypes(data.filter(i => i.category === 'milk').map(i => ({ id: i.code, ...i })));
+        setSweetnessOptions(data.filter(i => i.category === 'sweetness').map(i => i.code));
+        setExtras(data.filter(i => i.category === 'extra').map(i => ({ id: i.code, ...i })));
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error("Failed to load coffee ingredients", err);
+        setLoading(false);
+      });
+  }, []);
+
+  useEffect(() => {
     let price = 1500; // Base price
 
     const typeObj = COFFEE_TYPES.find(t => t.id === selectedType);
-    if (typeObj) price += typeObj.price;
+    if (typeObj) price += Number(typeObj.price || 0);
 
     const sizeObj = SIZES.find(s => s.id === size);
-    if (sizeObj) price += sizeObj.price;
+    if (sizeObj) price += Number(sizeObj.price || 0);
 
     const milkObj = MILK_TYPES.find(m => m.id === milk);
-    if (milkObj) price += milkObj.price;
+    if (milkObj) price += Number(milkObj.price || 0);
 
     selectedExtras.forEach(e => {
       const extra = EXTRAS.find(item => item.id === e);
-      if (extra) price += extra.price;
+      if (extra) price += Number(extra.price || 0);
     });
 
     setTotalPrice(price);
@@ -78,8 +72,8 @@ const CoffeeBuilder = () => {
   const { addToCart } = useCart();
 
   const handleOrder = () => {
-    const typeName = COFFEE_TYPES.find(t => t.id === selectedType).name;
-    const sizeName = SIZES.find(s => s.id === size).name;
+    const typeName = COFFEE_TYPES.find(t => t.id === selectedType)?.name || 'Espresso';
+    const sizeName = SIZES.find(s => s.id === size)?.name || 'Small';
     
     const customCoffee = {
       id: `coffee-${Date.now()}`,
@@ -104,7 +98,9 @@ const CoffeeBuilder = () => {
   return (
     <div className="coffee-builder-page">
       <h1 className="builder-main-title">Order your custom made coffee</h1>
-      
+      {loading ? (
+        <div style={{ textAlign: 'center', padding: '4rem' }}>Loading ingredients...</div>
+      ) : (
       <div className="builder-container">
         <div className="builder-main">
           {/* 1. Coffee Base Selection */}
@@ -245,23 +241,23 @@ const CoffeeBuilder = () => {
               </div>
 
               <div className="summary-item">
-                <span className="label">Type: {COFFEE_TYPES.find(t => t.id === selectedType).name}</span>
+                <span className="label">Type: {COFFEE_TYPES.find(t => t.id === selectedType)?.name || 'Espresso'}</span>
                 <span className="value">
-                  {COFFEE_TYPES.find(t => t.id === selectedType).price > 0 ? `+RWF ${COFFEE_TYPES.find(t => t.id === selectedType).price}` : 'Included'}
+                  {Number(COFFEE_TYPES.find(t => t.id === selectedType)?.price) > 0 ? `+RWF ${COFFEE_TYPES.find(t => t.id === selectedType)?.price}` : 'Included'}
                 </span>
               </div>
 
               <div className="summary-item">
-                <span className="label">Size: {SIZES.find(s => s.id === size).name}</span>
+                <span className="label">Size: {SIZES.find(s => s.id === size)?.name || 'Small'}</span>
                 <span className="value">
-                  {SIZES.find(s => s.id === size).price > 0 ? `+RWF ${SIZES.find(s => s.id === size).price}` : 'Free'}
+                  {Number(SIZES.find(s => s.id === size)?.price) > 0 ? `+RWF ${SIZES.find(s => s.id === size)?.price}` : 'Free'}
                 </span>
               </div>
 
               <div className="summary-item">
-                <span className="label">Milk: {MILK_TYPES.find(m => m.id === milk).name}</span>
+                <span className="label">Milk: {MILK_TYPES.find(m => m.id === milk)?.name || 'None'}</span>
                 <span className="value">
-                  {MILK_TYPES.find(m => m.id === milk).price > 0 ? `+RWF ${MILK_TYPES.find(m => m.id === milk).price}` : 'Free'}
+                  {Number(MILK_TYPES.find(m => m.id === milk)?.price) > 0 ? `+RWF ${MILK_TYPES.find(m => m.id === milk)?.price}` : 'Free'}
                 </span>
               </div>
 
@@ -313,6 +309,7 @@ const CoffeeBuilder = () => {
           </div>
         </aside>
       </div>
+      )}
     </div>
   );
 };

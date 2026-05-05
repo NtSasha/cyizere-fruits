@@ -2,33 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { Check, Plus, Minus, ShoppingCart, GlassWater, Leaf, Droplets, Sparkles, ChevronRight, Info } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import './JuiceBuilder.css';
+import { getApiUrl } from '../utils/api';
 
-const FRUITS = [
-  { id: 'mango', name: 'Mango', price: 500, color: '#FFBE0B', image: '/mango.jpg' },
-  { id: 'banana', name: 'Banana', price: 400, color: '#FFE15D', image: '/banana.jpg' },
-  { id: 'orange', name: 'Orange', price: 600, color: '#FB5607', image: '/orange.jpg' },
-  { id: 'pineapple', name: 'Pineapple', price: 700, color: '#FFD60A', image: '/pineapple.png' },
-  { id: 'apple', name: 'Apple', price: 500, color: '#FF006E', image: '/lettuce.jpg' }, // Placeholder image
-  { id: 'beetroot', name: 'Beetroot', price: 800, color: '#800020', image: '/pepper.jpg' } // Placeholder
-];
-
-const SIZES = [
-  { id: 'small', name: 'Small', price: 0 },
-  { id: 'medium', name: 'Medium', price: 500 },
-  { id: 'large', name: 'Large', price: 1000 },
-  { id: 'extra-large', name: 'Extra Large', price: 2000 }
-];
-
-const SWEETNESS = ['No sugar', 'Low', 'Medium', 'High'];
-
-const EXTRAS = [
-  { id: 'ice', name: 'Ice', price: 0 },
-  { id: 'milk', name: 'Milk', price: 300 },
-  { id: 'honey', name: 'Honey', price: 500 },
-  { id: 'ginger', name: 'Ginger', price: 200 }
-];
+// Ingredients will be loaded dynamically from the database
 
 const JuiceBuilder = () => {
+  const [loading, setLoading] = useState(true);
+  const [FRUITS, setFruits] = useState([]);
+  const [SIZES, setSizes] = useState([]);
+  const [SWEETNESS, setSweetnessOptions] = useState([]);
+  const [EXTRAS, setExtras] = useState([]);
+
   const [selectedFruits, setSelectedFruits] = useState([]);
   const [size, setSize] = useState('small');
   const [sweetness, setSweetness] = useState('Medium');
@@ -36,22 +20,38 @@ const JuiceBuilder = () => {
   const [totalPrice, setTotalPrice] = useState(2000); // Base price
 
   useEffect(() => {
+    fetch(getApiUrl('/builder?builder_type=juice'))
+      .then(res => res.json())
+      .then(data => {
+        setFruits(data.filter(i => i.category === 'fruit').map(i => ({ id: i.code, ...i })));
+        setSizes(data.filter(i => i.category === 'size').map(i => ({ id: i.code, ...i })));
+        setSweetnessOptions(data.filter(i => i.category === 'sweetness').map(i => i.code));
+        setExtras(data.filter(i => i.category === 'extra').map(i => ({ id: i.code, ...i })));
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error("Failed to load ingredients", err);
+        setLoading(false);
+      });
+  }, []);
+
+  useEffect(() => {
     let price = 2000;
 
     // Add fruits price
     selectedFruits.forEach(f => {
       const fruit = FRUITS.find(item => item.id === f);
-      if (fruit) price += fruit.price;
+      if (fruit) price += Number(fruit.price || 0);
     });
 
     // Add size price
     const selectedSize = SIZES.find(s => s.id === size);
-    if (selectedSize) price += selectedSize.price;
+    if (selectedSize) price += Number(selectedSize.price || 0);
 
     // Add extras price
     selectedExtras.forEach(e => {
       const extra = EXTRAS.find(item => item.id === e);
-      if (extra) price += extra.price;
+      if (extra) price += Number(extra.price || 0);
     });
 
     setTotalPrice(price);
@@ -108,6 +108,9 @@ const JuiceBuilder = () => {
   return (
     <div className="juice-builder-page">
       <h1 className="builder-main-title">Order your custom made juice</h1>
+      {loading ? (
+        <div style={{ textAlign: 'center', padding: '4rem' }}>Loading ingredients...</div>
+      ) : (
       <div className="builder-container">
         {/* Left Side: Customization */}
         <div className="builder-main">
@@ -230,9 +233,9 @@ const JuiceBuilder = () => {
               </div>
 
               <div className="summary-item">
-                <span className="label">Size: {SIZES.find(s => s.id === size).name}</span>
+                <span className="label">Size: {SIZES.find(s => s.id === size)?.name || 'Small'}</span>
                 <span className="value">
-                  {SIZES.find(s => s.id === size).price > 0 ? `+RWF ${SIZES.find(s => s.id === size).price}` : 'Free'}
+                  {Number(SIZES.find(s => s.id === size)?.price) > 0 ? `+RWF ${SIZES.find(s => s.id === size)?.price}` : 'Free'}
                 </span>
               </div>
 
@@ -288,6 +291,7 @@ const JuiceBuilder = () => {
           </div>
         </aside>
       </div>
+      )}
     </div>
   );
 };

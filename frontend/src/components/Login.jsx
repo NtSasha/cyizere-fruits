@@ -1,20 +1,77 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { X, Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import { FcGoogle } from 'react-icons/fc';
+import { useAuth } from '../context/AuthContext';
+import toast from 'react-hot-toast';
 import './Login.css';
+import { getApiUrl } from '../utils/api';
 
 const Login = ({ isOpen, onClose }) => {
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const { login } = useAuth();
+  const navigate = useNavigate();
+  
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
 
+  // Reset form when modal closes or opens
+  React.useEffect(() => {
+    if (!isOpen) {
+      setFormData({
+        email: '',
+        password: '',
+      });
+      setError(null);
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Login submitted:', formData);
+    setLoading(true);
+    setError(null);
+    
+    try {
+      const response = await fetch(getApiUrl('/users/login'), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+      
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.message || data.error || 'Failed to login');
+      }
+      
+      toast.success('Welcome back!');
+      login(data.user, data.token);
+      setFormData({
+        email: '',
+        password: '',
+      });
+      onClose();
+      
+      if (data.user?.role === 'admin') {
+        navigate('/admin');
+      }
+    } catch (err) {
+      console.error("Login technical info:", err);
+      const friendlyMessage = err.message.includes('Invalid') 
+        ? "We couldn't find an account with those details. Please check your email and password."
+        : "We're having trouble logging you in. Please try again in a moment.";
+      
+      setError(friendlyMessage);
+      toast.error(friendlyMessage);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -29,6 +86,8 @@ const Login = ({ isOpen, onClose }) => {
             <h2>Welcome Back!</h2>
             <p>Enter your credentials to continue.</p>
           </div>
+
+          {error && <div className="auth-error-message" style={{ color: 'red', marginBottom: '15px', fontSize: '14px', textAlign: 'center' }}>{error}</div>}
 
           <form className="auth-modal-form" onSubmit={handleSubmit}>
             <div className="modal-form-group">
@@ -72,7 +131,9 @@ const Login = ({ isOpen, onClose }) => {
               <a href="#" className="forgot-link">Forgot password?</a>
             </div>
 
-            <button type="submit" className="modal-primary-btn">Sign in</button>
+            <button type="submit" className="modal-primary-btn" disabled={loading}>
+              {loading ? 'Signing in...' : 'Sign in'}
+            </button>
 
             <button type="button" className="modal-google-btn">
               <FcGoogle size={20} />

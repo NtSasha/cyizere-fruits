@@ -1,7 +1,25 @@
+require('dotenv').config();
 const express = require("express");
 const cors = require("cors");
+const helmet = require("helmet");
+const compression = require("compression");
+const rateLimit = require("express-rate-limit");
 
 const app = express();
+
+// Security: Set security-related HTTP headers
+app.use(helmet());
+
+// Security: Rate limiting to prevent brute force/DDoS
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 1000, // Increased for development
+    message: "Too many requests from this IP, please try again after 15 minutes"
+});
+app.use("/api/", limiter);
+
+// Scalability: Compress all responses
+app.use(compression());
 
 app.use(cors());
 app.use(express.json());
@@ -24,6 +42,9 @@ app.use("/api/cart", cartRoutes);
 
 const adminRoutes = require("./routes/adminRoutes");
 app.use("/api/admin", adminRoutes);
+
+const builderRoutes = require("./routes/builderRoutes");
+app.use("/api/builder", builderRoutes);
 
 app.listen(5000, () => {
     console.log("Server running on port 5000");

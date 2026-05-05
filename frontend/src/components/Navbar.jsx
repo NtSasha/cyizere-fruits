@@ -2,13 +2,22 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Search, ShoppingCart, Leaf, Menu, X } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
+import toast from 'react-hot-toast';
 import './Navbar.css';
 
 const Navbar = ({ onLoginClick, onRegisterClick }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { cartCount } = useCart();
+  const { user, logout } = useAuth();
   const currentPath = location.pathname;
+
+  const handleLogout = () => {
+    logout();
+    toast.success('Logged out successfully');
+    navigate('/');
+  };
   const [activeAnchor, setActiveAnchor] = useState('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -85,12 +94,22 @@ const Navbar = ({ onLoginClick, onRegisterClick }) => {
           </Link>
           
           <div className="auth-buttons desktop-only">
-            <button onClick={onLoginClick} className="auth-btn">
-              Login
-            </button>
-            <button onClick={onRegisterClick} className="auth-btn">
-              Register
-            </button>
+            {user ? (
+              <div className="user-menu" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                <button onClick={handleLogout} className="auth-btn">
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <>
+                <button onClick={onLoginClick} className="auth-btn">
+                  Login
+                </button>
+                <button onClick={onRegisterClick} className="auth-btn">
+                  Register
+                </button>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Toggle */}
@@ -130,12 +149,22 @@ const Navbar = ({ onLoginClick, onRegisterClick }) => {
           </div>
 
           <div className="mobile-auth-actions">
-            <button onClick={() => { onLoginClick(); setIsMobileMenuOpen(false); }} className="mobile-auth-btn login">
-              Login
-            </button>
-            <button onClick={() => { onRegisterClick(); setIsMobileMenuOpen(false); }} className="mobile-auth-btn register">
-              Register
-            </button>
+            {user ? (
+              <>
+                <button onClick={() => { handleLogout(); setIsMobileMenuOpen(false); }} className="mobile-auth-btn login">
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <button onClick={() => { onLoginClick(); setIsMobileMenuOpen(false); }} className="mobile-auth-btn login">
+                  Login
+                </button>
+                <button onClick={() => { onRegisterClick(); setIsMobileMenuOpen(false); }} className="mobile-auth-btn register">
+                  Register
+                </button>
+              </>
+            )}
           </div>
         </div>
       </div>

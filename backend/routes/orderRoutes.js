@@ -6,6 +6,7 @@ const authorizeRole = require("../middleware/role");
 
 const {
     createOrder,
+    createGuestOrder,
     getAllOrders,
     getOrderById,
     updateOrderStatus,
@@ -16,6 +17,7 @@ const {
 
 
 router.post("/", auth, createOrder);
+router.post("/guest", createGuestOrder);
 router.get("/my-orders", auth, getMyOrders);
 router.get("/:id", getOrderById);
 router.post("/checkout", auth, checkout);

@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { Search, ShoppingCart, Filter, X, ChevronDown, LayoutGrid, List } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import './Shop.css';
+import { getApiUrl } from '../utils/api';
 
 const ProductCard = ({ product, onAddToCart }) => {
   const getBadgeClass = (badge) => {
@@ -17,30 +18,31 @@ const ProductCard = ({ product, onAddToCart }) => {
 
   return (
     <div 
-      className="templated-product-card"
+      className="featured-product-card"
       onClick={(e) => {
         e.currentTarget.classList.add('clicked-anim');
         setTimeout(() => e.currentTarget.classList.remove('clicked-anim'), 400);
       }}
     >
-      <div className="tp-img-wrap">
+      <div className="fp-img-wrap">
         {product.badge && (
-          <span className={`tp-badge ${getBadgeClass(product.badge)}`}>
+          <span className={`fp-badge ${getBadgeClass(product.badge)}`}>
             {product.badge}
           </span>
         )}
         <img src={product.image} alt={product.name} />
       </div>
-      <div className="tp-info">
-        <h3 className="tp-title">{product.name}</h3>
-        <div className="tp-footer">
-          <div className="tp-price-wrap">
-            <span className="tp-price">
-              RWF {product.price.toLocaleString()} <span className="unit-text">/{product.unit}</span>
+      <div className="fp-info">
+        <h3 className="fp-title">{product.name}</h3>
+        <p className="fp-unit">{product.unit}</p>
+        <div className="fp-footer">
+          <div className="fp-price-wrap">
+            <span className="fp-price">
+              RWF {product.price.toLocaleString()}
             </span>
           </div>
           <button 
-            className="tp-cart-btn" 
+            className="fp-cart-btn" 
             onClick={(e) => {
               e.stopPropagation();
               onAddToCart(product);
@@ -59,7 +61,29 @@ const Shop = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [viewMode, setViewMode] = useState('grid');
+  const [allProducts, setAllProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
   const { addToCart } = useCart();
+
+  // Fetch products from backend
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const res = await fetch(getApiUrl(`/products?t=${Date.now()}`));
+        if (res.ok) {
+          const data = await res.json();
+          setAllProducts(data);
+        } else {
+          console.error("Failed to fetch products from backend");
+        }
+      } catch (error) {
+        console.error("Network error fetching products:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProducts();
+  }, []);
 
   // Sync category from URL if present
   useEffect(() => {
@@ -80,171 +104,33 @@ const Shop = () => {
     { id: 'seasonal', name: 'Seasonal' }
   ];
 
-  const allProducts = [
-    {
-      id: 1,
-      name: 'Fresh Lettuce',
-      category: 'vegetables',
-      categoryLabel: 'vegetables',
-      price: 1200,
-      unit: 'kg',
-      image: '/lettuce.jpg',
-      badge: 'Organic'
-    },
-    {
-      id: 2,
-      name: 'Organic Bananas',
-      category: 'fruits',
-      categoryLabel: 'fruits',
-      price: 2200,
-      unit: 'bunch',
-      image: '/banana.jpg',
-      badge: 'Bestseller'
-    },
-    {
-      id: 3,
-      name: 'Red Pepper',
-      category: 'organic',
-      categoryLabel: 'organic',
-      price: 5000,
-      unit: 'kg',
-      image: '/pepper.jpg',
-      badge: 'Hot Deal'
-    },
-    {
-      id: 4,
-      name: 'Green Peas',
-      category: 'vegetables',
-      categoryLabel: 'vegetables',
-      price: 1800,
-      unit: '500g',
-      image: '/peas.jpg',
-      badge: 'New Arrival'
-    },
-    {
-      id: 5,
-      name: 'Valencia Oranges',
-      category: 'fruits',
-      categoryLabel: 'fruits',
-      price: 2000,
-      unit: 'kg',
-      image: '/orange.jpg',
-      badge: 'Seasonal'
-    },
-    {
-      id: 6,
-      name: 'Potatoes',
-      category: 'vegetables',
-      categoryLabel: 'vegetables',
-      price: 3200,
-      unit: 'kg',
-      image: '/Potatoes.jpg'
-    },
-    {
-      id: 7,
-      name: 'Fresh Kale',
-      category: 'organic',
-      categoryLabel: 'organic',
-      price: 1200,
-      unit: 'bunch',
-      image: '/organic-new.png',
-      badge: 'New'
-    },
-    {
-      id: 8,
-      name: 'Mixed Fruit Pack',
-      category: 'fruit-packs',
-      categoryLabel: 'packs',
-      price: 15000,
-      unit: 'pack',
-      image: '/fruit-packs.png',
-      badge: 'Popular'
-    },
-    {
-      id: 9,
-      name: 'Tropical Fruit Basket',
-      category: 'fruit-packs',
-      categoryLabel: 'baskets',
-      price: 25000,
-      unit: 'basket',
-      image: '/fruit-basket.png',
-      badge: 'Deal'
-    },
-    {
-      id: 10,
-      name: 'Fresh Pineapple',
-      category: 'fruits',
-      categoryLabel: 'fruits',
-      price: 1800,
-      unit: 'pc',
-      image: '/pineapple.png',
-      badge: 'Sweet'
-    },
-    {
-      id: 11,
-      name: 'Eggplant',
-      category: 'vegetables',
-      categoryLabel: 'vegetables',
-      price: 2200,
-      unit: 'kg',
-      image: '/eggplant.png'
-    },
-    {
-      id: 12,
-      name: 'Fresh cabbage',
-      category: 'organic',
-      categoryLabel: 'organic',
-      price: 4500,
-      unit: 'kg',
-      image: '/cabbage.jpg',
-      badge: 'Organic'
-    },
-    {
-      id: 13,
-      name: 'Fresh Avocado',
-      category: 'fruits',
-      categoryLabel: 'fruits',
-      price: 1500,
-      unit: 'pc',
-      image: '/fruits.png',
-      badge: 'New'
-    },
-    {
-      id: 14,
-      name: 'Sweet Potatoes',
-      category: 'vegetables',
-      categoryLabel: 'vegetables',
-      price: 2000,
-      unit: 'kg',
-      image: '/sweet-potatoes.jpg'
-    },
-    {
-      id: 15,
-      name: 'Green Cucumber',
-      category: 'vegetables',
-      categoryLabel: 'vegetables',
-      price: 800,
-      unit: 'pc',
-      image: '/cucumber.jpg',
-      badge: 'Organic'
-    },
-    {
-      id: 16,
-      name: 'Ripe Mangoes',
-      category: 'fruits',
-      categoryLabel: 'fruits',
-      price: 3000,
-      unit: 'kg',
-      image: '/mango.jpg',
-      badge: 'New'
-    }
-  ];
+  // Products are now fetched from the database!
 
-  const filteredProducts = allProducts.filter(product => {
-    const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
-    return matchesSearch && matchesCategory;
-  });
+  const filteredProducts = allProducts
+    .filter(product => {
+      const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
+      return matchesSearch && matchesCategory;
+    })
+    .sort((a, b) => {
+      // Helper to rank image types: Original (1) > Placeholders (2) > Generated (3)
+      const getRank = (img) => {
+        if (!img) return 4;
+        if (img.includes('-new.png')) return 3;
+        if (img.includes('/fruits.png') || img.includes('/vegetables.png') || img.includes('/fruit-packs.png')) return 2;
+        return 1;
+      };
+
+      const rankA = getRank(a.image);
+      const rankB = getRank(b.image);
+
+      if (rankA !== rankB) {
+        return rankA - rankB;
+      }
+      
+      // Secondary sort: Keep consistent order within ranks
+      return a.name.localeCompare(b.name);
+    });
 
   const handleAddToCart = (product) => {
     addToCart(product);
@@ -301,7 +187,11 @@ const Shop = () => {
 
         {/* Products Grid */}
         <div className="shop-products-wrapper">
-          {filteredProducts.length > 0 ? (
+          {loading ? (
+            <div className="no-products">
+              <h3>Loading products...</h3>
+            </div>
+          ) : filteredProducts.length > 0 ? (
             <div className={`shop-grid ${viewMode === 'list' ? 'list-view' : ''}`}>
               {filteredProducts.map(product => (
                 <ProductCard 

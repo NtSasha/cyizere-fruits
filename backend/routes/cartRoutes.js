@@ -6,10 +6,12 @@ const auth = require("../middleware/auth");
 const {
     addToCart,
     getCart,
-    removeFromCart
+    removeFromCart,
+    syncCart
 } = require("../controllers/cartController");
 
 router.post("/", auth, addToCart);
+router.post("/sync", auth, syncCart);
 router.get("/", auth, getCart);
 router.delete("/:id", auth, removeFromCart);
 

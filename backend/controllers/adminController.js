@@ -106,10 +106,13 @@ const getTopProducts = async (req, res) => {
         const result = await pool.query(
             `SELECT 
                 p.name,
+                p.image,
+                p.category,
+                p.price,
                 SUM(oi.quantity) AS total_sold
              FROM order_items oi
              JOIN products p ON p.id = oi.product_id
-             GROUP BY p.name
+             GROUP BY p.name, p.image, p.category, p.price
              ORDER BY total_sold DESC`
         );
 
