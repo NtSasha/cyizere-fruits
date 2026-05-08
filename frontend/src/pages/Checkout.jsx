@@ -1,14 +1,25 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, MapPin, Phone, User, Mail, CreditCard, ChevronRight, CheckCircle, Truck } from 'lucide-react';
+import { ArrowLeft, MapPin, Phone, User, Mail, CreditCard, ChevronRight, CheckCircle, Truck, Smartphone } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 import { useFlutterwave, closePaymentModal } from 'flutterwave-react-v3';
 import './Checkout.css';
 import { getApiUrl } from '../utils/api';
 
 const Checkout = () => {
   const { cartItems, cartTotal, clearCart } = useCart();
+  const { user, openLogin } = useAuth();
   const navigate = useNavigate();
+
+  // Redirect if not logged in
+  React.useEffect(() => {
+    if (!user) {
+      openLogin();
+      navigate('/shop');
+    }
+  }, [user, navigate, openLogin]);
+
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     fullName: '',
@@ -16,7 +27,7 @@ const Checkout = () => {
     phone: '',
     address: '',
     city: 'Kigali',
-    paymentMethod: 'm-pesa'
+    paymentMethod: 'mtn'
   });
 
   const deliveryFee = cartTotal > 0 ? 2000 : 0;
@@ -28,7 +39,7 @@ const Checkout = () => {
   };
 
   const config = {
-    public_key: 'FLWPUBK_TEST-02b9b536416d68aca4111357593c723f-X', // Replace with your Flutterwave Public Key
+    public_key: 'FLWPUBK_TEST-64c1de8bf596fb914982ba76e1cf68f4-X', // Replace with your Flutterwave Public Key
     tx_ref: Date.now().toString(),
     amount: total,
     currency: 'RWF',
@@ -56,11 +67,12 @@ const Checkout = () => {
         if (response.status === "successful" || response.status === "completed") {
           
           try {
-            // Save order to the backend
-            const res = await fetch(getApiUrl('/orders/guest'), {
+            // Verify payment and save order to the backend
+            const res = await fetch(getApiUrl('/payment/verify'), {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
+                transaction_id: response.transaction_id,
                 items: cartItems,
                 customer: formData
               })
@@ -68,29 +80,49 @@ const Checkout = () => {
 
             if (res.ok) {
               const data = await res.json();
-              console.log("Order saved to DB:", data);
+              console.log("Order verified and saved:", data);
               setStep(3); // Go to Success step
               setTimeout(() => {
                 clearCart();
                 setFormData({
-                  firstName: '',
-                  lastName: '',
+                  fullName: '',
                   email: '',
                   phone: '',
                   address: '',
-                  city: '',
+                  city: 'Kigali',
+                  paymentMethod: 'mtn'
                 });
               }, 500);
             } else {
               console.error("Failed to save order to backend");
               // Still show success since payment went through, but log error
               setStep(3);
-              setTimeout(() => clearCart(), 500);
+              setTimeout(() => {
+                clearCart();
+                setFormData({
+                  fullName: '',
+                  email: '',
+                  phone: '',
+                  address: '',
+                  city: 'Kigali',
+                  paymentMethod: 'mtn'
+                });
+              }, 500);
             }
           } catch (error) {
             console.error("Error communicating with backend:", error);
             setStep(3);
-            setTimeout(() => clearCart(), 500);
+            setTimeout(() => {
+              clearCart();
+              setFormData({
+                fullName: '',
+                email: '',
+                phone: '',
+                address: '',
+                city: 'Kigali',
+                paymentMethod: 'mtn'
+              });
+            }, 500);
           }
         }
         closePaymentModal(); // Close modal programmatically
@@ -228,19 +260,6 @@ const Checkout = () => {
               <h2>Payment Method</h2>
             </div>
             <div className="payment-options">
-              <label className={`payment-card ${formData.paymentMethod === 'm-pesa' ? 'active' : ''}`}>
-                <input 
-                  type="radio" 
-                  name="paymentMethod" 
-                  value="m-pesa" 
-                  checked={formData.paymentMethod === 'm-pesa'}
-                  onChange={handleInputChange}
-                />
-                <div className="payment-info">
-                  <span className="payment-name">M-Pesa</span>
-                  <span className="payment-desc">Mobile Money Transfer</span>
-                </div>
-              </label>
               <label className={`payment-card ${formData.paymentMethod === 'mtn' ? 'active' : ''}`}>
                 <input 
                   type="radio" 
@@ -249,11 +268,32 @@ const Checkout = () => {
                   checked={formData.paymentMethod === 'mtn'}
                   onChange={handleInputChange}
                 />
+                <div className="payment-icon-wrap">
+                  <Smartphone size={24} />
+                </div>
                 <div className="payment-info">
-                  <span className="payment-name">MTN Mobile Money</span>
-                  <span className="payment-desc">MoMo Transfer</span>
+                  <span className="payment-name">MTN MoMo</span>
+                  <span className="payment-desc">Rwanda Mobile Money</span>
                 </div>
               </label>
+
+              <label className={`payment-card ${formData.paymentMethod === 'airtel' ? 'active' : ''}`}>
+                <input 
+                  type="radio" 
+                  name="paymentMethod" 
+                  value="airtel" 
+                  checked={formData.paymentMethod === 'airtel'}
+                  onChange={handleInputChange}
+                />
+                <div className="payment-icon-wrap">
+                  <Smartphone size={24} />
+                </div>
+                <div className="payment-info">
+                  <span className="payment-name">Airtel Money</span>
+                  <span className="payment-desc">Airtel Rwanda</span>
+                </div>
+              </label>
+
               <label className={`payment-card ${formData.paymentMethod === 'card' ? 'active' : ''}`}>
                 <input 
                   type="radio" 
@@ -262,6 +302,9 @@ const Checkout = () => {
                   checked={formData.paymentMethod === 'card'}
                   onChange={handleInputChange}
                 />
+                <div className="payment-icon-wrap">
+                  <CreditCard size={24} />
+                </div>
                 <div className="payment-info">
                   <span className="payment-name">Credit Card</span>
                   <span className="payment-desc">Visa / Mastercard</span>

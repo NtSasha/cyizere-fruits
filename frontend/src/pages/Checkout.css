@@ -176,16 +176,40 @@
   display: none;
 }
 
+.payment-icon-wrap {
+  width: 48px;
+  height: 48px;
+  background: #f1f5f9;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  color: #375340;
+  transition: all 0.2s;
+}
+
+.payment-info {
+  width: 100%;
+}
+
 .payment-name {
   font-weight: 700;
   color: #1a1a1a;
   display: block;
+  font-size: 0.95rem;
 }
 
 .payment-desc {
-  font-size: 0.75rem;
-  color: #888;
+  font-size: 0.7rem;
+  color: #64748b;
   margin-top: 0.2rem;
+  display: block;
+}
+
+.payment-card.active .payment-icon-wrap {
+  background: #375340;
+  color: white;
 }
 
 .place-order-btn {

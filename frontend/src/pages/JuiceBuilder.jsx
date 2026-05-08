@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Check, Plus, Minus, ShoppingCart, GlassWater, Leaf, Droplets, Sparkles, ChevronRight, Info } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 import './JuiceBuilder.css';
 import { getApiUrl } from '../utils/api';
 
 // Ingredients will be loaded dynamically from the database
 
 const JuiceBuilder = () => {
+  const { user, openLogin } = useAuth();
   const [loading, setLoading] = useState(true);
   const [FRUITS, setFruits] = useState([]);
   const [SIZES, setSizes] = useState([]);
@@ -80,6 +82,10 @@ const JuiceBuilder = () => {
   const { addToCart } = useCart();
 
   const handleOrder = () => {
+    if (!user) {
+      openLogin();
+      return;
+    }
     if (selectedFruits.length === 0) {
       alert("Please select at least one fruit for your juice.");
       return;
@@ -282,13 +288,7 @@ const JuiceBuilder = () => {
             </div>
           </div>
 
-          <div className="promo-card">
-            <Sparkles size={24} color="#375340" />
-            <div className="promo-text">
-              <h4>Buy 3, Get 1 Free!</h4>
-              <p>Valid on all custom juice blends this weekend.</p>
-            </div>
-          </div>
+
         </aside>
       </div>
       )}

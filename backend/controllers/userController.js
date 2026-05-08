@@ -24,6 +24,7 @@ const registerUser = async (req, res) => {
         );
 
         const user = result.rows[0];
+        delete user.password;
         
         const token = jwt.sign(
             { id: user.id, email: user.email, role: user.role },
@@ -38,8 +39,8 @@ const registerUser = async (req, res) => {
         });
 
     } catch (err) {
-        console.error("Registration Error:", err);
-        res.status(500).json({ message: "We encountered a problem creating your account. Please try again later." });
+        console.error("Registration Error Detail:", err);
+        res.status(500).json({ message: "Internal server error during registration", error: err.message });
     }
 };
 

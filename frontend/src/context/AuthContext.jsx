@@ -5,6 +5,8 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem('token') || null);
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isRegisterOpen, setIsRegisterOpen] = useState(false);
 
   useEffect(() => {
     // If we have a token but no user, we could theoretically fetch the user here
@@ -24,6 +26,7 @@ export const AuthProvider = ({ children }) => {
     setToken(userToken);
     localStorage.setItem('token', userToken);
     localStorage.setItem('user', JSON.stringify(userData));
+    setIsLoginOpen(false); // Close login modal on success
   };
 
   const logout = () => {
@@ -33,8 +36,33 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('user');
   };
 
+  const openLogin = () => {
+    setIsLoginOpen(true);
+    setIsRegisterOpen(false);
+  };
+
+  const openRegister = () => {
+    setIsRegisterOpen(true);
+    setIsLoginOpen(false);
+  };
+
+  const closeModals = () => {
+    setIsLoginOpen(false);
+    setIsRegisterOpen(false);
+  };
+
   return (
-    <AuthContext.Provider value={{ user, token, login, logout }}>
+    <AuthContext.Provider value={{ 
+      user, 
+      token, 
+      login, 
+      logout, 
+      isLoginOpen, 
+      isRegisterOpen, 
+      openLogin, 
+      openRegister, 
+      closeModals 
+    }}>
       {children}
     </AuthContext.Provider>
   );

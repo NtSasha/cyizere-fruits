@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ArrowRight, ShoppingCart, Apple, Grape, Carrot, ShieldCheck, Truck, Clock, Droplet, Package, Leaf, Search, ChevronDown, LayoutGrid, List, GlassWater, Tag, Phone, Mail, MapPin, Send, CheckCircle } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 import './Home.css';
 
 import { getApiUrl } from '../utils/api';
@@ -10,6 +11,7 @@ const Home = () => {
   const { hash } = useLocation();
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { user, openLogin } = useAuth();
   const { addToCart } = useCart();
 
   useEffect(() => {
@@ -35,10 +37,10 @@ const Home = () => {
           const targetNames = [
             'Potatoes', 
             'Carrots', 
-            'Organic Red Pepper', 
+            'Red Pepper', 
             'Green Cucumber', 
             'Red Apples', 
-            'Valencia Oranges', 
+            'Thyme', 
             'Ripe Mangoes', 
             'Eggplant'
           ];
@@ -219,6 +221,10 @@ const Home = () => {
                     </div>
                     <button className="fp-cart-btn" onClick={(e) => {
                       e.stopPropagation();
+                      if (!user) {
+                        openLogin();
+                        return;
+                      }
                       addToCart(product);
                     }}>
                       <ShoppingCart size={18} />
@@ -245,7 +251,15 @@ const Home = () => {
                 <span className="old-price">RWF 1,500</span>
               </div>
 
-              <button className="banner-btn">Add to Cart</button>
+              <button className="banner-btn" onClick={() => {
+                if (!user) {
+                  openLogin();
+                  return;
+                }
+                // Find a fruit product to add as an example or use a placeholder
+                const fruitDeal = featuredProducts.find(p => p.category === 'fruits') || featuredProducts[0];
+                if (fruitDeal) addToCart(fruitDeal);
+              }}>Add to Cart</button>
             </div>
             <div className="banner-image-v2">
               <img src="/fruits.png" alt="Fresh fruits" />

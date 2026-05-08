@@ -13,10 +13,10 @@ import Login from './components/Login';
 import Register from './components/Register';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import { Toaster } from 'react-hot-toast';
+import { useAuth } from './context/AuthContext';
 
 function App() {
-  const [isLoginOpen, setIsLoginOpen] = React.useState(false);
-  const [isRegisterOpen, setIsRegisterOpen] = React.useState(false);
+  const { isLoginOpen, isRegisterOpen, openLogin, openRegister, closeModals } = useAuth();
   const location = useLocation();
 
   const isAdminRoute = location.pathname.startsWith('/admin');
@@ -42,7 +42,7 @@ function App() {
           },
         }}
       />
-      {!isAdminRoute && <Navbar onLoginClick={() => setIsLoginOpen(true)} onRegisterClick={() => setIsRegisterOpen(true)} />}
+      {!isAdminRoute && <Navbar onLoginClick={openLogin} onRegisterClick={openRegister} />}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/categories" element={<Categories />} />
@@ -60,8 +60,8 @@ function App() {
       </Routes>
       {!isAdminRoute && <Footer />}
 
-      <Login isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
-      <Register isOpen={isRegisterOpen} onClose={() => setIsRegisterOpen(false)} />
+      <Login isOpen={isLoginOpen} onClose={closeModals} />
+      <Register isOpen={isRegisterOpen} onClose={closeModals} />
     </>
   );
 }

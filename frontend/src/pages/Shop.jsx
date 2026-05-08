@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Search, ShoppingCart, Filter, X, ChevronDown, LayoutGrid, List } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 import './Shop.css';
 import { getApiUrl } from '../utils/api';
 
@@ -63,6 +64,7 @@ const Shop = () => {
   const [viewMode, setViewMode] = useState('grid');
   const [allProducts, setAllProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { user, openLogin } = useAuth();
   const { addToCart } = useCart();
 
   // Fetch products from backend
@@ -133,6 +135,10 @@ const Shop = () => {
     });
 
   const handleAddToCart = (product) => {
+    if (!user) {
+      openLogin();
+      return;
+    }
     addToCart(product);
   };
 

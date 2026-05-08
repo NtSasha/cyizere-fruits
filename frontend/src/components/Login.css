@@ -7,22 +7,48 @@
   background: rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(8px);
   display: flex;
-  align-items: center; /* Stick to center */
+  align-items: center; /* Back to centered */
   justify-content: center;
   z-index: 2000;
-  padding: 1.5rem; 
+  padding: 1rem; 
   animation: fadeIn 0.3s ease;
 }
 
 .modal-content {
   background: white;
   width: 100%;
-  max-width: 420px; /* Slightly wider for better presence */
+  max-width: 420px;
   border-radius: 24px;
-  padding: 2.2rem; /* Balanced padding */
+  padding: 2.2rem;
   position: relative;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2);
   animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Compact version for Register */
+.modal-content.register-modal {
+  padding: 1.8rem 2.2rem;
+  max-width: 400px;
+}
+
+.register-modal .auth-modal-header {
+  margin-bottom: 1rem;
+}
+
+.register-modal .auth-modal-form {
+  gap: 0.75rem;
+}
+
+.register-modal .modal-input-wrapper input {
+  padding: 0.65rem 1rem;
+}
+
+.register-modal .modal-primary-btn {
+  padding: 0.75rem;
+}
+
+.register-modal .auth-modal-footer {
+  margin-top: 0.75rem;
 }
 
 .modal-close-btn {
@@ -196,8 +222,42 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
+.auth-modal-footer {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.auth-modal-footer p {
+  color: #64748b;
+  font-size: 0.95rem;
+}
+
+.auth-switch-btn {
+  background: none;
+  border: none;
+  color: #166534;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0 4px;
+  font-family: inherit;
+  font-size: inherit;
+  transition: all 0.2s;
+}
+
+.auth-switch-btn:hover {
+  text-decoration: underline;
+  color: #14532d;
+}
+
 @media (max-width: 480px) {
+  .modal-overlay {
+    padding: 20px 10px;
+  }
   .modal-content {
-    padding: 2.5rem 2rem;
+    padding: 1.5rem;
+    border-radius: 20px;
+  }
+  .auth-modal-header h2 {
+    font-size: 1.3rem;
   }
 }

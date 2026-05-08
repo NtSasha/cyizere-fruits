@@ -8,7 +8,7 @@ import { getApiUrl } from '../utils/api';
 const Register = ({ isOpen, onClose }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const { login } = useAuth();
+  const { login, openLogin } = useAuth();
 
   const [formData, setFormData] = useState({
     fullName: '',
@@ -17,17 +17,15 @@ const Register = ({ isOpen, onClose }) => {
     password: '',
   });
 
-  // Reset form when modal closes or opens
+  // Reset form when modal state changes
   React.useEffect(() => {
-    if (!isOpen) {
-      setFormData({
-        fullName: '',
-        email: '',
-        phone: '',
-        password: '',
-      });
-      setError(null);
-    }
+    setFormData({
+      fullName: '',
+      email: '',
+      phone: '',
+      password: '',
+    });
+    setError(null);
   }, [isOpen]);
 
   if (!isOpen) return null;
@@ -36,6 +34,7 @@ const Register = ({ isOpen, onClose }) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
+    let data;
     
     try {
       const response = await fetch(getApiUrl('/users/register'), {
@@ -49,9 +48,12 @@ const Register = ({ isOpen, onClose }) => {
         })
       });
       
-      const data = await response.json();
+      data = await response.json();
       
       if (!response.ok) {
+        if (data.errors && Array.isArray(data.errors)) {
+          throw new Error(data.errors.map(err => err.msg).join('. '));
+        }
         throw new Error(data.message || data.error || 'Failed to register');
       }
       
@@ -66,20 +68,28 @@ const Register = ({ isOpen, onClose }) => {
       onClose();
     } catch (err) {
       console.error("Registration technical info:", err);
-      const friendlyMessage = err.message.includes('already exists') 
-        ? "This email is already registered. Try logging in instead!"
-        : "We couldn't create your account right now. Please check your connection and try again.";
+      
+      let friendlyMessage = err.message;
+      
+      if (err.message.includes('Failed to fetch')) {
+        friendlyMessage = "Connection failed. Is the server running?";
+      } else if (err.message.includes('already exists')) {
+        friendlyMessage = "This email is already registered. Try logging in instead!";
+      } else if (!data?.errors && !data?.message) {
+        // Fallback for unexpected errors
+        friendlyMessage = "We couldn't create your account right now. Please try again later.";
+      }
       
       setError(friendlyMessage);
       toast.error(friendlyMessage);
     } finally {
       setLoading(false);
     }
-  };
+};
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+      <div className="modal-content register-modal" onClick={(e) => e.stopPropagation()}>
         <button className="modal-close-btn" onClick={onClose}>
           <X size={24} />
         </button>
@@ -102,6 +112,7 @@ const Register = ({ isOpen, onClose }) => {
                   value={formData.fullName}
                   onChange={(e) => setFormData({...formData, fullName: e.target.value})}
                   required 
+                  autoComplete="name"
                 />
               </div>
             </div>
@@ -115,6 +126,7 @@ const Register = ({ isOpen, onClose }) => {
                   value={formData.email}
                   onChange={(e) => setFormData({...formData, email: e.target.value})}
                   required 
+                  autoComplete="email"
                 />
               </div>
             </div>
@@ -128,6 +140,7 @@ const Register = ({ isOpen, onClose }) => {
                   value={formData.phone}
                   onChange={(e) => setFormData({...formData, phone: e.target.value})}
                   required 
+                  autoComplete="tel"
                 />
               </div>
             </div>
@@ -141,6 +154,7 @@ const Register = ({ isOpen, onClose }) => {
                   value={formData.password}
                   onChange={(e) => setFormData({...formData, password: e.target.value})}
                   required 
+                  autoComplete="new-password"
                 />
               </div>
             </div>
@@ -148,6 +162,10 @@ const Register = ({ isOpen, onClose }) => {
             <button type="submit" className="modal-primary-btn" disabled={loading}>
               {loading ? 'Creating Account...' : 'Create Account'}
             </button>
+
+            <div className="auth-modal-footer">
+              <p>Already have an account? <button type="button" onClick={openLogin} className="auth-switch-btn">Sign in</button></p>
+            </div>
           </form>
         </div>
       </div>

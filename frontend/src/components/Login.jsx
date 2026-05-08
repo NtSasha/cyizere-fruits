@@ -11,7 +11,7 @@ const Login = ({ isOpen, onClose }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const { login } = useAuth();
+  const { login, openRegister } = useAuth();
   const navigate = useNavigate();
   
   const [formData, setFormData] = useState({
@@ -19,15 +19,13 @@ const Login = ({ isOpen, onClose }) => {
     password: '',
   });
 
-  // Reset form when modal closes or opens
+  // Reset form when modal state changes
   React.useEffect(() => {
-    if (!isOpen) {
-      setFormData({
-        email: '',
-        password: '',
-      });
-      setError(null);
-    }
+    setFormData({
+      email: '',
+      password: '',
+    });
+    setError(null);
   }, [isOpen]);
 
   if (!isOpen) return null;
@@ -99,6 +97,7 @@ const Login = ({ isOpen, onClose }) => {
                   value={formData.email}
                   onChange={(e) => setFormData({...formData, email: e.target.value})}
                   required 
+                  autoComplete="email"
                 />
               </div>
             </div>
@@ -112,6 +111,7 @@ const Login = ({ isOpen, onClose }) => {
                   value={formData.password}
                   onChange={(e) => setFormData({...formData, password: e.target.value})}
                   required 
+                  autoComplete="current-password"
                 />
                 <button 
                   type="button" 
@@ -139,6 +139,10 @@ const Login = ({ isOpen, onClose }) => {
               <FcGoogle size={20} />
               Sign in with Google
             </button>
+
+            <div className="auth-modal-footer">
+              <p>Don't have an account? <button type="button" onClick={openRegister} className="auth-switch-btn">Sign up</button></p>
+            </div>
           </form>
         </div>
       </div>

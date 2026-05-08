@@ -103,10 +103,7 @@ const Cart = () => {
               </div>
             </div>
             
-            <div className="promo-code">
-              <input type="text" placeholder="Promo Code" />
-              <button>Apply</button>
-            </div>
+
 
             <button className="checkout-btn" onClick={() => navigate('/checkout')}>
               Proceed to Checkout

@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Check, ShoppingCart, Coffee, Info, Sparkles, GlassWater, ThermometerSun, Droplets } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 import './CoffeeBuilder.css';
 import { getApiUrl } from '../utils/api';
 
 // Ingredients will be loaded dynamically from the database
 
 const CoffeeBuilder = () => {
+  const { user, openLogin } = useAuth();
   const [loading, setLoading] = useState(true);
   const [COFFEE_TYPES, setCoffeeTypes] = useState([]);
   const [SIZES, setSizes] = useState([]);
@@ -72,6 +74,10 @@ const CoffeeBuilder = () => {
   const { addToCart } = useCart();
 
   const handleOrder = () => {
+    if (!user) {
+      openLogin();
+      return;
+    }
     const typeName = COFFEE_TYPES.find(t => t.id === selectedType)?.name || 'Espresso';
     const sizeName = SIZES.find(s => s.id === size)?.name || 'Small';
     
@@ -300,13 +306,7 @@ const CoffeeBuilder = () => {
             </div>
           </div>
 
-          <div className="promo-card-coffee">
-            <Sparkles size={24} color="#375340" style={{ marginRight: '1rem' }} />
-            <div className="promo-text">
-              <h4>Morning Special</h4>
-              <p>Free cookie with any large coffee before 10 AM!</p>
-            </div>
-          </div>
+
         </aside>
       </div>
       )}
