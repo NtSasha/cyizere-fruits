@@ -10,24 +10,28 @@ const verifyPayment = async (req, res) => {
 
     try {
         // 1. Verify transaction with Flutterwave
-        // Use secret key from env
-        const secretKey = process.env.FLW_SECRET_KEY || 'FLWSECK_TEST-PLACEHOLDER';
-        
-        const response = await axios.get(
-            `https://api.flutterwave.com/v3/transactions/${transaction_id}/verify`,
-            {
-                headers: {
-                    Authorization: `Bearer ${secretKey}`
+        let amount = 0;
+        let isCOD = transaction_id === 'COD';
+
+        if (!isCOD) {
+            // Use secret key from env
+            const secretKey = process.env.FLW_SECRET_KEY || 'FLWSECK_TEST-PLACEHOLDER';
+            
+            const response = await axios.get(
+                `https://api.flutterwave.com/v3/transactions/${transaction_id}/verify`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${secretKey}`
+                    }
                 }
+            );
+
+            const { status } = response.data.data;
+
+            // 2. Validate payment details
+            if (status !== "successful") {
+                return res.status(400).json({ error: "Payment was not successful" });
             }
-        );
-
-        const { status, currency, amount, tx_ref } = response.data.data;
-
-        // 2. Validate payment details
-        // In a real app, check if currency and amount match your order
-        if (status !== "successful") {
-            return res.status(400).json({ error: "Payment was not successful" });
         }
 
         // 3. Create the order (Logic moved from orderController)

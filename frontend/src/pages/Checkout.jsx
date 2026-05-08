@@ -27,7 +27,7 @@ const Checkout = () => {
     phone: '',
     address: '',
     city: 'Kigali',
-    paymentMethod: 'mtn'
+    paymentMethod: 'cod'
   });
 
   const deliveryFee = cartTotal > 0 ? 2000 : 0;
@@ -58,8 +58,39 @@ const Checkout = () => {
 
   const handleFlutterPayment = useFlutterwave(config);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (formData.paymentMethod === 'cod') {
+        try {
+            const res = await fetch(getApiUrl('/payment/verify'), {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                transaction_id: 'COD',
+                items: cartItems,
+                customer: formData
+              })
+            });
+
+            if (res.ok) {
+              setStep(3); // Go to Success step
+              setTimeout(() => {
+                clearCart();
+                setFormData({
+                  fullName: '', email: '', phone: '', address: '', city: 'Kigali', paymentMethod: 'cod'
+                });
+              }, 500);
+            } else {
+              console.error("Failed to save COD order to backend");
+              alert("Failed to place order. Please try again.");
+            }
+        } catch (error) {
+            console.error("Error communicating with backend:", error);
+            alert("Error communicating with the server.");
+        }
+        return;
+    }
     
     handleFlutterPayment({
       callback: async (response) => {
@@ -260,6 +291,23 @@ const Checkout = () => {
               <h2>Payment Method</h2>
             </div>
             <div className="payment-options">
+              <label className={`payment-card ${formData.paymentMethod === 'cod' ? 'active' : ''}`}>
+                <input 
+                  type="radio" 
+                  name="paymentMethod" 
+                  value="cod" 
+                  checked={formData.paymentMethod === 'cod'}
+                  onChange={handleInputChange}
+                />
+                <div className="payment-icon-wrap">
+                  <Truck size={24} />
+                </div>
+                <div className="payment-info">
+                  <span className="payment-name">Cash on Delivery</span>
+                  <span className="payment-desc">Pay when it arrives</span>
+                </div>
+              </label>
+
               <label className={`payment-card ${formData.paymentMethod === 'mtn' ? 'active' : ''}`}>
                 <input 
                   type="radio" 
