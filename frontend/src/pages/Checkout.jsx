@@ -38,12 +38,19 @@ const Checkout = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  let paymentOptions = 'card,mobilemoneyrwanda';
+  if (formData.paymentMethod === 'mtn' || formData.paymentMethod === 'airtel') {
+    paymentOptions = 'mobilemoneyrwanda';
+  } else if (formData.paymentMethod === 'card') {
+    paymentOptions = 'card';
+  }
+
   const config = {
-    public_key: 'FLWPUBK_TEST-64c1de8bf596fb914982ba76e1cf68f4-X', // Replace with your Flutterwave Public Key
+    public_key: import.meta.env.VITE_FLW_PUBLIC_KEY || 'FLWPUBK_TEST-64c1de8bf596fb914982ba76e1cf68f4-X',
     tx_ref: Date.now().toString(),
     amount: total,
     currency: 'RWF',
-    payment_options: 'card,mobilemoneyrwanda', // Support for Cards & MTN Mobile Money in Rwanda
+    payment_options: paymentOptions,
     customer: {
       email: formData.email,
       phone_number: formData.phone,
