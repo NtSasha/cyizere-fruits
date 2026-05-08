@@ -75,6 +75,20 @@ const verifyPayment = async (req, res) => {
             }
 
             await client.query("COMMIT");
+
+            // --- SEND EMAIL NOTIFICATION ---
+            if (customer && customer.email) {
+                const { sendOrderConfirmation } = require('../utils/emailService');
+                // Run asynchronously without awaiting so it doesn't block the API response
+                sendOrderConfirmation(
+                    customer.email, 
+                    customer.fullName || 'Valued Customer', 
+                    orderId, 
+                    finalTotal, 
+                    items
+                );
+            }
+
             res.status(201).json({ 
                 success: true, 
                 message: "Payment verified and order placed", 
