@@ -130,6 +130,7 @@
   font-size: 0.95rem;
 }
 
+/* Icons */
 .action-icon, .auth-icon {
   color: #375340;
   position: relative;
@@ -329,4 +330,85 @@
 
 .mobile-auth-btn:active {
   transform: scale(0.98);
+}
+
+/* User Profile Styling */
+.user-profile-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.25rem 0.75rem 0.25rem 0.25rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 50px;
+  transition: var(--transition);
+}
+
+.user-avatar-circle {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, #22c55e 0%, #15803d 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 800;
+  font-size: 0.9rem;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.user-avatar-circle.large {
+  width: 60px;
+  height: 60px;
+  font-size: 1.5rem;
+}
+
+.user-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.user-name-text {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #375340;
+}
+
+.auth-btn.logout {
+  background: #fee2e2;
+  color: #ef4444;
+}
+
+.auth-btn.logout:hover {
+  background: #ef4444;
+  color: white;
+}
+
+.mobile-user-profile {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: #f8fafc;
+  border-radius: 20px;
+  margin-bottom: 2rem;
+}
+
+.mobile-user-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.mobile-user-name {
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: #1e293b;
+}
+
+.mobile-user-email {
+  font-size: 0.85rem;
+  color: #64748b;
 }

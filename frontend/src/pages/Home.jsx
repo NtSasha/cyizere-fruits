@@ -3,6 +3,7 @@ import { ArrowRight, ShoppingCart, Apple, Grape, Carrot, ShieldCheck, Truck, Clo
 import { Link, useLocation } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
+import toast from 'react-hot-toast';
 import './Home.css';
 
 import { getApiUrl } from '../utils/api';
@@ -29,7 +30,7 @@ const Home = () => {
   useEffect(() => {
     const fetchFeatured = async () => {
       try {
-        const res = await fetch(getApiUrl('/products'));
+        const res = await fetch(getApiUrl(`/products?t=${Date.now()}`));
         if (res.ok) {
           const data = await res.json();
           
@@ -40,6 +41,7 @@ const Home = () => {
             'Red Pepper', 
             'Green Cucumber', 
             'Red Apples', 
+            'Organic Eggs',
             'Thyme', 
             'Ripe Mangoes', 
             'Eggplant'
@@ -95,7 +97,7 @@ const Home = () => {
               { name: 'Vegetables', image: '/vegetables.png' },
               { name: 'Juices', image: '/juices.png', scale: '0.85' },
               { name: 'Fruit Packs', image: '/fruit-packs.png', scale: '1.2' },
-              { name: 'Organic Products', image: '/pepper.jpg', scale: '1.2', objectPosition: 'center' },
+              { name: 'Organic Products', image: '/organic-new.png', scale: '1.2', objectPosition: 'center' },
               { name: 'Seasonal fruits and vegetables', image: '/seasonal-full-mix.png', scale: '1.2' },
               { name: 'Coffee', image: '/coffee.png', scale: '1' },
               { name: 'Juice Bar', image: '/juices.png', scale: '0.85' },
@@ -374,23 +376,43 @@ const Home = () => {
 
             {/* Right Side: Contact Form */}
             <div className="contact-form-container">
-              <form className="contact-form" onSubmit={(e) => {
+              <form className="contact-form" onSubmit={async (e) => {
                 e.preventDefault();
                 const btn = e.target.querySelector('.send-msg-btn');
                 const successMsg = e.target.querySelector('.form-success');
                 
+                const formData = {
+                  name: e.target['contact-name'].value,
+                  email: e.target['contact-email'].value,
+                  message: e.target['contact-message'].value
+                };
+
                 btn.classList.add('loading');
                 btn.disabled = true;
                 
-                setTimeout(() => {
+                try {
+                  const res = await fetch(getApiUrl('/contact/submit'), {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                  });
+
+                  if (res.ok) {
+                    successMsg.classList.add('show');
+                    e.target.reset();
+                    setTimeout(() => {
+                      successMsg.classList.remove('show');
+                    }, 5000);
+                  } else {
+                    toast.error("Failed to send message. Please try again.");
+                  }
+                } catch (error) {
+                  console.error("Contact error:", error);
+                  toast.error("An error occurred. Please check your connection.");
+                } finally {
                   btn.classList.remove('loading');
-                  successMsg.classList.add('show');
-                  e.target.reset();
-                  setTimeout(() => {
-                    successMsg.classList.remove('show');
-                    btn.disabled = false;
-                  }, 5000);
-                }, 1500);
+                  btn.disabled = false;
+                }
               }}>
                 <div className="form-group">
                   <label htmlFor="contact-name">Full Name</label>

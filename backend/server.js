@@ -49,6 +49,9 @@ app.use("/api/builder", builderRoutes);
 const paymentRoutes = require("./routes/paymentRoutes");
 app.use("/api/payment", paymentRoutes);
 
+const contactRoutes = require("./routes/contactRoutes");
+app.use("/api/contact", contactRoutes);
+
 app.listen(5000, () => {
     console.log("Server running on port 5000");
 });

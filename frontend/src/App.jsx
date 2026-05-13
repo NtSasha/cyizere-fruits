@@ -12,6 +12,7 @@ import Checkout from './pages/Checkout';
 import Login from './components/Login';
 import Register from './components/Register';
 import AdminDashboard from './pages/admin/AdminDashboard';
+import MyOrders from './pages/MyOrders';
 import { Toaster } from 'react-hot-toast';
 import { useAuth } from './context/AuthContext';
 
@@ -22,7 +23,7 @@ function App() {
   const isAdminRoute = location.pathname.startsWith('/admin');
 
   return (
-    <>
+    <div className="app-container">
       <Toaster 
         position="top-right" 
         toastOptions={{
@@ -43,26 +44,31 @@ function App() {
         }}
       />
       {!isAdminRoute && <Navbar onLoginClick={openLogin} onRegisterClick={openRegister} />}
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/categories" element={<Categories />} />
-        <Route path="/shop" element={<Shop />} />
-        <Route path="/juice-bar" element={<JuiceBuilder />} />
-        <Route path="/coffee-bar" element={<CoffeeBuilder />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/checkout" element={<Checkout />} />
-        
-        <Route path="/admin/*" element={<AdminDashboard />} />
-        
-        {/* Placeholder routes for future */}
-        <Route path="/login" element={<div style={{minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center'}}><h2>Login coming soon</h2></div>} />
-        <Route path="/register" element={<div style={{minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center'}}><h2>Register coming soon</h2></div>} />
-      </Routes>
+      
+      <main className="main-content">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/categories" element={<Categories />} />
+          <Route path="/shop" element={<Shop />} />
+          <Route path="/juice-bar" element={<JuiceBuilder />} />
+          <Route path="/coffee-bar" element={<CoffeeBuilder />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/my-orders" element={<MyOrders />} />
+          
+          <Route path="/admin/*" element={<AdminDashboard />} />
+          
+          {/* Placeholder routes for future */}
+          <Route path="/login" element={<div style={{minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center'}}><h2>Login coming soon</h2></div>} />
+          <Route path="/register" element={<div style={{minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center'}}><h2>Register coming soon</h2></div>} />
+        </Routes>
+      </main>
+
       {!isAdminRoute && <Footer />}
 
       <Login isOpen={isLoginOpen} onClose={closeModals} />
       <Register isOpen={isRegisterOpen} onClose={closeModals} />
-    </>
+    </div>
   );
 }
 

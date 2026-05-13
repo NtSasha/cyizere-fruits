@@ -13,6 +13,7 @@ const initDB = async () => {
                 phone VARCHAR(20),
                 password VARCHAR(255) NOT NULL,
                 role VARCHAR(20) DEFAULT 'customer',
+                profile_picture VARCHAR(255),
                 two_factor_enabled BOOLEAN DEFAULT FALSE,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )

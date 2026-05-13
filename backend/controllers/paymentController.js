@@ -54,15 +54,12 @@ const verifyPayment = async (req, res) => {
             let orderResult;
             try {
                 orderResult = await client.query(
-                    `INSERT INTO orders (user_id, total_price, status) VALUES (NULL, $1, 'paid') RETURNING *`,
-                    [finalTotal]
+                    `INSERT INTO orders (user_id, total_price, status) VALUES ($1, $2, 'paid') RETURNING *`,
+                    [req.user.id, finalTotal]
                 );
             } catch (err) {
-                // Dummy user fallback
-                orderResult = await client.query(
-                    `INSERT INTO orders (user_id, total_price, status) VALUES (1, $1, 'paid') RETURNING *`,
-                    [finalTotal]
-                );
+                console.error("Order insertion error:", err);
+                throw new Error("Failed to create order record");
             }
 
             const orderId = orderResult.rows[0].id;

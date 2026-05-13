@@ -96,7 +96,27 @@ const Navbar = ({ onLoginClick, onRegisterClick }) => {
           <div className="auth-buttons desktop-only">
             {user ? (
               <div className="user-menu" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                <button onClick={handleLogout} className="auth-btn">
+                <Link to="/my-orders" className="nav-link-item" style={{ fontSize: '0.9rem' }}>
+                  My Orders
+                </Link>
+                {user.role === 'admin' && (
+                  <Link to="/admin" className="nav-link-item" style={{ fontSize: '0.9rem' }}>
+                    Dashboard
+                  </Link>
+                )}
+                
+                <div className="user-profile-pill">
+                  <div className="user-avatar-circle">
+                    {user.profile_picture ? (
+                      <img src={user.profile_picture} alt={user.name} className="user-avatar-img" />
+                    ) : (
+                      <span className="user-initial">{user.name ? user.name.charAt(0).toUpperCase() : '?'}</span>
+                    )}
+                  </div>
+                  <span className="user-name-text desktop-only">{user.name ? user.name.split(' ')[0] : 'User'}</span>
+                </div>
+
+                <button onClick={handleLogout} className="auth-btn logout">
                   Logout
                 </button>
               </div>
@@ -148,9 +168,29 @@ const Navbar = ({ onLoginClick, onRegisterClick }) => {
             ))}
           </div>
 
-          <div className="mobile-auth-actions">
             {user ? (
               <>
+                <div className="mobile-user-profile">
+                   <div className="user-avatar-circle large">
+                    {user.profile_picture ? (
+                      <img src={user.profile_picture} alt={user.name} className="user-avatar-img" />
+                    ) : (
+                      <span className="user-initial">{user.name ? user.name.charAt(0).toUpperCase() : '?'}</span>
+                    )}
+                  </div>
+                  <div className="mobile-user-details">
+                    <span className="mobile-user-name">{user.name || 'User'}</span>
+                    <span className="mobile-user-email">{user.email}</span>
+                  </div>
+                </div>
+                <Link to="/my-orders" className="mobile-nav-item" onClick={() => setIsMobileMenuOpen(false)}>
+                  My Orders
+                </Link>
+                {user.role === 'admin' && (
+                  <Link to="/admin" className="mobile-nav-item" onClick={() => setIsMobileMenuOpen(false)}>
+                    Admin Dashboard
+                  </Link>
+                )}
                 <button onClick={() => { handleLogout(); setIsMobileMenuOpen(false); }} className="mobile-auth-btn login">
                   Logout
                 </button>
@@ -167,7 +207,6 @@ const Navbar = ({ onLoginClick, onRegisterClick }) => {
             )}
           </div>
         </div>
-      </div>
     </nav>
   );
 };

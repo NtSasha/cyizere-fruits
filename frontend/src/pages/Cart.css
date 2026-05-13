@@ -2,7 +2,6 @@
   padding: 8rem 5% 4rem;
   max-width: 1400px;
   margin: 0 auto;
-  min-height: 80vh;
   background-color: #f8faf8;
 }
 
@@ -307,7 +306,6 @@
   padding: 10rem 5%;
   text-align: center;
   background: #f8faf8;
-  min-height: 80vh;
   display: flex;
   align-items: center;
   justify-content: center;

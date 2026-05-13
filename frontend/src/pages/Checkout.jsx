@@ -21,6 +21,7 @@ const Checkout = () => {
   }, [user, navigate, openLogin]);
 
   const [step, setStep] = useState(1);
+  const [placedOrderId, setPlacedOrderId] = useState(null);
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -72,7 +73,10 @@ const Checkout = () => {
         try {
             const res = await fetch(getApiUrl('/payment/verify'), {
               method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
+              headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${sessionStorage.getItem('token') || localStorage.getItem('token')}`
+              },
               body: JSON.stringify({
                 transaction_id: 'COD',
                 items: cartItems,
@@ -81,6 +85,8 @@ const Checkout = () => {
             });
 
             if (res.ok) {
+              const data = await res.json();
+              setPlacedOrderId(data.order.id);
               setStep(3); // Go to Success step
               setTimeout(() => {
                 clearCart();
@@ -108,7 +114,10 @@ const Checkout = () => {
             // Verify payment and save order to the backend
             const res = await fetch(getApiUrl('/payment/verify'), {
               method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
+              headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${sessionStorage.getItem('token') || localStorage.getItem('token')}`
+              },
               body: JSON.stringify({
                 transaction_id: response.transaction_id,
                 items: cartItems,
@@ -119,6 +128,7 @@ const Checkout = () => {
             if (res.ok) {
               const data = await res.json();
               console.log("Order verified and saved:", data);
+              setPlacedOrderId(data.order.id);
               setStep(3); // Go to Success step
               setTimeout(() => {
                 clearCart();
@@ -132,35 +142,13 @@ const Checkout = () => {
                 });
               }, 500);
             } else {
-              console.error("Failed to save order to backend");
-              // Still show success since payment went through, but log error
-              setStep(3);
-              setTimeout(() => {
-                clearCart();
-                setFormData({
-                  fullName: '',
-                  email: '',
-                  phone: '',
-                  address: '',
-                  city: 'Kigali',
-                  paymentMethod: 'mtn'
-                });
-              }, 500);
+              const errorData = await res.json();
+              console.error("Failed to save order to backend", errorData);
+              alert("Payment verification failed! Please check your API keys.");
             }
           } catch (error) {
             console.error("Error communicating with backend:", error);
-            setStep(3);
-            setTimeout(() => {
-              clearCart();
-              setFormData({
-                fullName: '',
-                email: '',
-                phone: '',
-                address: '',
-                city: 'Kigali',
-                paymentMethod: 'mtn'
-              });
-            }, 500);
+            alert("Error communicating with the server during payment verification.");
           }
         }
         closePaymentModal(); // Close modal programmatically
@@ -186,7 +174,7 @@ const Checkout = () => {
           <h1>Order Placed Successfully!</h1>
           <p>Thank you for shopping with Cyizere Fruits. Your order is being prepared and will be delivered shortly.</p>
           <div className="order-details-brief">
-            <p><strong>Order ID:</strong> #CF-{Math.floor(Math.random() * 100000)}</p>
+            <p><strong>Order ID:</strong> #CF-{placedOrderId?.toString().padStart(4, '0') || '...'}</p>
             <p><strong>Estimated Delivery:</strong> 30-45 minutes</p>
           </div>
           <button className="home-btn" onClick={() => navigate('/')}>
